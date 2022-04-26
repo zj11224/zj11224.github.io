@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://zj11224.github.io</id>
+    <title>ZJ Blog</title>
+    <updated>2022-04-26T14:46:35.206Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://zj11224.github.io"/>
+    <link rel="self" href="https://zj11224.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://zj11224.github.io/images/avatar.png</logo>
+    <icon>https://zj11224.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2022, ZJ Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[Ubuntu+go环境配置]]></title>
+        <id>https://zj11224.github.io/post/2022.04.26.Ubuntu+go环境配置/</id>
+        <link href="https://zj11224.github.io/post/2022.04.26.Ubuntu+go环境配置/">
+        </link>
+        <updated>2022-04-25T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>简单记录下，linux下go环境配置的坑</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-下载go安装包"><strong>一、下载GO安装包</strong></h4>
+<p>可以通过命令行下载（需要国内源）：<br>
+<code>sudo apt-get install go</code><br>
+但是这样无法选定安装路径，而且版本可能会过低，不推荐。</p>
+<p>这里建议通过wget方式安装<br>
+下载（国内镜像站）： https://studygolang.com/dl/golang/go1.15.linux-amd64.tar.gz<br>
+解压：<code>sudo tar -C /usr/local -zxvf go1.15.linux-amd64.tar.gz</code></p>
+<h4 id="二-配置环境变量"><strong>二、配置环境变量</strong></h4>
+<p>先打开环境变量配置文件<br>
+<code>sudo vim ~/.bashrc</code></p>
+<p>这里推荐<code>~/.bashrc</code><br>
+因为之前尝试配置<code>/etc/profile</code>和<code>~/.profile</code>都出现过<strong>重开机后需要手动刷新</strong>的情况，非常奇怪<br>
+这里推荐home目录下的<code>./bashrc</code></p>
+<p>添加以下三行配置并保存退出</p>
+<pre><code class="language-shell">export GOROOT=/usr/local/go		#go解压位置
+export GOPATH=/home/username/go #开发者目录
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+</code></pre>
+<p>通过下面命令刷新，或者重启<br>
+<code>source ~/.bashrc</code></p>
+<h4 id="三-go-module设置"><strong>三、GO MODULE设置</strong></h4>
+<p>运行<code>go version</code><br>
+若出现<code>go version go1.15 linux/amd64</code><br>
+则说明配置成功</p>
+<p>通过<code>go env</code>查看go的详细信息<br>
+通过<code>go env -w GO111MODULE=on</code> 将GO111MODULE设置为开始，若已经启用，跳过<br>
+通过<code>go env -w GOPROXY=https://goproxy.cn,direct</code> 将代理设置为国内源方便后面git clone</p>
+<p>在你的工程文件夹下，输入以下命令<br>
+<code>go mod init xxx</code><br>
+xxx为你的项目名，不一定要和工程文件夹名相同</p>
+<p>但是后面你的导入自己的包就要用到这个module名<br>
+比如：<code>import xxx/packageName</code></p>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[VS Code+Ubuntu远程连接配置]]></title>
+        <id>https://zj11224.github.io/post/2022.04.26.VS Code+Ubuntu远程连接配置/</id>
+        <link href="https://zj11224.github.io/post/2022.04.26.VS Code+Ubuntu远程连接配置/">
+        </link>
+        <updated>2022-04-25T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>记录一下通过VSCode通过ssh插件远程Ubuntu虚拟机、编写go代码中遇到的一些坑</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-虚拟机远程连接配置"><strong>一、虚拟机远程连接配置</strong></h4>
+<p>首先确认主机和虚拟机双方能ping通</p>
+<p>执行以下命令</p>
+<pre><code class="language-shell"># 安装ssh相关服务
+sudo apt install openssh-server
+
+# 修改配置文件
+sudo gedit /etc/ssh/sshd_config
+</code></pre>
+<p>找到以下选项进行设置（我打开就是设置好了）：<br>
+<code>Port 22 PermitRootLogin yes PubkeyAuthentication yes</code></p>
+<pre><code class="language-shell"># 启动ssh服务
+sudo /etc/init.d/ssh start
+# 设置开机自启动
+sudo systemctl enable ssh
+</code></pre>
+<h4 id="二-vs-code配置"><strong>二、VS Code配置</strong></h4>
+<p>下载remote-ssh插件</p>
+<p>配置config文件<br>
+获取虚拟机ip <code>ifconfig</code></p>
+<pre><code class="language-sh"># 自定义远程服务器名
+Host hostname
+    HostName 192.168.x.xxx 	# 服务器ip
+    User username 			# 服务器上的用户名
+    Port 22 				# ssh端口
+#上面代码后面的注释记得删，不然会报管道错误
+</code></pre>
+<h4 id="三-免密登录"><strong>三、免密登录</strong></h4>
+<p>windows主机下，在cmd下输入<code>ssh-keygen</code>生成密钥（需要git）<br>
+生成路径如下：<br>
+<code>C:\Users\username\.ssh\id_rsa C:\Users\username\.ssh\id_rsa.pub</code></p>
+<p>将其中<code>id_rsa.pub</code>发送到虚拟机内的<code>/home/username/.ssh</code>中。<br>
+将其改名为<code>authorized_keys</code></p>
+<p>添加<code>IdentityFile &quot;C:\Users\username\.ssh\id_rsa&quot;</code>到VSCode config文件中。</p>
+<p>重启ssh即可。</p>
+<h4 id="四-编写go代码"><strong>四、编写go代码</strong></h4>
+<p>若要用到定义跳转（ctrl+点击），代码补全等功能，vscode会提示下载插件<br>
+点击下载可能会失败，因为是通过github下载。<br>
+可以更改goproxy<br>
+<code>go env -w GOPROXY=https://goproxy.cn,direct</code><br>
+重新下载即可（自动下载到GOPATH路径下）。</p>
+<p>还有两个注意点：</p>
+<p>1、必须是go module管理项目，不然无法识别<strong>导入自定义包</strong>和<strong>当前编写文件外函数、变量</strong>。</p>
+<p>2、main包中多个main函数会报错，可以将其放在不同文件夹下，即使多个main函数也不会报错。</p>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[VS Code C++json文件配置]]></title>
+        <id>https://zj11224.github.io/post/2022.01.23.VS Code C++json文件配置/</id>
+        <link href="https://zj11224.github.io/post/2022.01.23.VS Code C++json文件配置/">
+        </link>
+        <updated>2022-01-22T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>VS Code C++个人json文件配置备份</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-launchjson调试运行配置"><strong>一、launch.json（调试运行配置）</strong></h4>
+<pre><code class="language-json">{  
+    &quot;version&quot;: &quot;0.2.0&quot;,  
+    &quot;configurations&quot;: [  
+        {  
+            &quot;name&quot;: &quot;c++ debug&quot;,        // 配置名称
+            &quot;type&quot;: &quot;cppdbg&quot;,           // 配置类型，这里只能为cppdbg  
+            &quot;preLaunchTask&quot;: &quot;compile&quot;, // 调试前任务(编译)
+            &quot;request&quot;: &quot;launch&quot;,        // 请求配置类型，可以为launch或attach  
+            &quot;program&quot;: &quot;${workspaceFolder}/build/${fileBasenameNoExtension}.exe&quot;,// 将要进行调试的程序的路径  
+            &quot;args&quot;: [
+                &quot;&lt;&quot;,
+                &quot;${workspaceFolder}/input&quot;,//数据输入文件
+                &quot;&gt;&quot;,
+                &quot;${workspaceFolder}/output&quot;//数据存储文件
+            ],                              // 程序调试时传递给程序的命令行参数
+            &quot;stopAtEntry&quot;: false,           // 程序入口是否断点
+            &quot;cwd&quot;: &quot;${workspaceFolder}&quot;,    // 调试程序时的工作目录
+            &quot;environment&quot;: [],              // 环境依赖
+            &quot;externalConsole&quot;: false,       // 调试时是否显示cmd
+            //&quot;console&quot;: &quot;internalConsole&quot;, // 输出显示
+            &quot;internalConsoleOptions&quot;: &quot;neverOpen&quot;,  // 是否跳到调试控制台
+            &quot;MIMode&quot;: &quot;gdb&quot;,                // 指定连接调试器
+            &quot;miDebuggerPath&quot;: &quot;gdb.exe&quot;, 	// miDebugger的路径
+            &quot;setupCommands&quot;: [  
+                {   
+		            &quot;description&quot;: &quot;Enable pretty-printing for gdb&quot;,  
+                    &quot;text&quot;: &quot;-enable-pretty-printing&quot;,  
+                    &quot;ignoreFailures&quot;: true  
+                }  
+            ]  
+        }  
+    ]  
+}
+</code></pre>
+<h4 id="二-tasksjson任务配置"><strong>二、tasks.json（任务配置）</strong></h4>
+<p>任务（即选择一个任务名，运行内部封装的一套命令）</p>
+<p>这里主要是封装编译的命令</p>
+<pre><code class="language-json">{
+    &quot;version&quot;: &quot;2.0.0&quot;,
+    &quot;tasks&quot;: [
+        {
+            &quot;type&quot;: &quot;shell&quot;,    // 任务类型
+            &quot;label&quot;: &quot;compile&quot;,     // 任务名
+            &quot;command&quot;: &quot;D:\\Program\\mingw64\\bin\\g++.exe&quot;,    // 编译器路径
+            &quot;args&quot;: [
+                &quot;-g&quot;,
+                &quot;${file}&quot;,
+                &quot;-o&quot;,
+                &quot;${workspaceFolder}/build/${fileBasenameNoExtension}.exe&quot;,
+            ],
+            &quot;options&quot;: {
+                &quot;cwd&quot;: &quot;${workspaceFolder}&quot;
+            },
+            &quot;problemMatcher&quot;: [
+                &quot;$gcc&quot;
+            ]
+        }
+    ]
+}
+</code></pre>
+<h4 id="三-c_cpp_propertiesjson插件配置"><strong>三、c_cpp_properties.json（插件配置）</strong></h4>
+<pre><code class="language-json">{
+    &quot;configurations&quot;: [
+        {
+            &quot;name&quot;: &quot;Win32&quot;,
+            &quot;includePath&quot;: [
+                &quot;${workspaceFolder}&quot;
+            ],
+            &quot;defines&quot;: [],
+            &quot;compilerPath&quot;: &quot;D:\\Program\\mingw64\\bin\\g++.exe&quot;,
+            &quot;browse&quot;: {
+                &quot;path&quot;: [
+                    &quot;${workspaceFolder}&quot;    // 符号路径搜索区
+                ]
+            },
+            &quot;cStandard&quot;: &quot;c11&quot;,
+            &quot;cppStandard&quot;: &quot;c++17&quot;
+        }
+    ],
+    &quot;version&quot;: 4
+}
+</code></pre>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[VMware Tools问题（共享复制/文件拖拽）]]></title>
+        <id>https://zj11224.github.io/post/2022.01.18.VMware Tools 问题/</id>
+        <link href="https://zj11224.github.io/post/2022.01.18.VMware Tools 问题/">
+        </link>
+        <updated>2022-01-17T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>本想解决虚拟机和本机间拖拽文件、文本复制粘贴公用，但是搞了一下午都没搞成功。</p>
+<p>这里把我找到的一些方法写出来，应该能解决大部分人的问题。</p>
+<p>若实在没法解决，也有一个共享文件夹的备用方案。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-安装vmware-tools"><strong>一、安装VMware Tools</strong></h4>
+<h5 id="1-使用命令行下载官方推荐"><strong>1、使用命令行下载（官方推荐）</strong></h5>
+<p>执行下面三行命令即可</p>
+<pre><code>sudo apt-get autoremove open-vm-tools
+sudo apt-get install open-vm-tools
+sudo apt-get install open-vm-tools-desktop
+
+reboot
+</code></pre>
+<h5 id="2-使用自带的vmware-tools文件"><strong>2、使用自带的VMware Tools文件</strong></h5>
+<p>运行ubuntu，点击虚拟机，显示如下：</p>
+<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.1.vmtools%E7%81%B0%E8%89%B2.png" alt="" loading="lazy"></figure>
+<p>部分人可能安装/重新安装VMware Tools是灰色的。</p>
+<p>解决方法：</p>
+<p>先关机，虚拟机 -&gt; 设置</p>
+<p>将驱动器都设置为自动获取</p>
+<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.3.%E9%A9%B1%E5%8A%A8%E5%99%A8%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>也可以在驱动器上挂载VMware Workstation文件夹下的linux.iso/windows.iso(对应系统)</p>
+<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.4.%E9%A9%B1%E5%8A%A8%E5%99%A8%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>开机后就会自动获取了，显示如下：</p>
+<figure data-type="image" tabindex="4"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.2.vmtools%E6%98%BE%E7%A4%BA%E6%AD%A3%E5%B8%B8.png" alt="" loading="lazy"></figure>
+<p>点击下载</p>
+<figure data-type="image" tabindex="5"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.2.1.vmtools%E5%85%89%E7%9B%98.png" alt="" loading="lazy"></figure>
+<p>压缩文件提取</p>
+<figure data-type="image" tabindex="6"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.2.2.vmtools%E5%8E%8B%E7%BC%A9%E5%8C%85%E6%8F%90%E5%8F%96.png" alt="" loading="lazy"></figure>
+<p>然后在提取出来的文件夹里打开终端，执行下面命令</p>
+<pre><code>sudo ./vmware-install.pl
+sudo apt-get update
+reboot
+</code></pre>
+<p>安装完成</p>
+<h4 id="二-可能存在的问题"><strong>二、可能存在的问题</strong></h4>
+<p>我是为了能实现文件拖拽和复制共享才需要VMwareTools，但是尝试完上面两种安装方法都无法拖拽问题，下面是我百度到的一些解决方法，对我仍然无效，大家可以试一下。</p>
+<h5 id="1-vmwaretools原有文件没有清理干净">1、VMwareTools<strong>原有文件没有清理干净</strong></h5>
+<p>将VMwareTools清理干净，再次下载</p>
+<pre><code>sudo vmware-uninstall-tools.pl
+sudo apt-get remove open-vm-tools
+sudo apt-get remove --auto-remove open-vm-tools
+sudo apt-get purge open-vm-tools
+</code></pre>
+<p><strong>2、VMwareTools有bug，下载补丁</strong></p>
+<pre><code>git clone https://github.com/rasa/vmware-tools-patches.git
+</code></pre>
+<p><strong>3、Mware拖拽文件选项没选</strong></p>
+<p>虚拟机 -&gt; 设置 -&gt; 选项 -&gt; 客户机隔离 -&gt; 启用拖放+复制粘贴，显示如下：</p>
+<figure data-type="image" tabindex="7"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/2.1.%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%9D%83%E9%99%90.png" alt="" loading="lazy"></figure>
+<h5 id="4-vmware增强型键盘"><strong>4、VMware增强型键盘</strong></h5>
+<p>虚拟机 -&gt; 设置 -&gt; 选项 -&gt; 常规 -&gt; 增强型键盘启用，显示如下：</p>
+<figure data-type="image" tabindex="8"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/2.2.%E9%94%AE%E7%9B%98%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<h5 id="5-ubuntu进程未开启"><strong>5、ubuntu进程未开启</strong></h5>
+<pre><code>/usr/bin/vmware-user
+</code></pre>
+<p>以上就是我能找到关于文件拖拽功能的解决办法，基本上每种都有人回复有效，也都有人回复没用。</p>
+<p>都可以试一下</p>
+<h4 id="三-备用方案"><strong>三、备用方案</strong></h4>
+<p>虚拟机 -&gt; 设置 -&gt; 选项 -&gt; 常规 -&gt; 启用共享文件夹，设置文件路径，显示如下：</p>
+<figure data-type="image" tabindex="9"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.1.%E5%90%AF%E7%94%A8%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9.png" alt="" loading="lazy"></figure>
+<p>在本机找到共享文件 -&gt; 属性 -&gt; 共享, 显示如下：</p>
+<figure data-type="image" tabindex="10"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.2.%E6%9C%AC%E6%9C%BA%E5%85%B1%E4%BA%AB%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>共享文件夹就在/mnt/hgfs目录下，</p>
+<p>若没有再次重装VMwareTools（参考上面）<br>
+或者运行下面命令</p>
+<pre><code class="language-shell"># 确认是否配置成功，有输出共享文件夹名，则成功
+vmware-hgfsclient
+# 如果之前没有命令包则先执行sudo apt-get install open-vm-tools
+sudo vmhgfs-fuse .host:/ /mnt/hgfs -o nonempty -o allow_other
+</code></pre>
+<p>接下来就能看到了</p>
+<figure data-type="image" tabindex="11"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.3.%E6%88%90%E5%8A%9F%E5%85%B1%E4%BA%AB.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.4.%E6%88%90%E5%8A%9F%E5%85%B1%E4%BA%AB.png" alt="" loading="lazy"></figure>
+<p>至此，文章结束。</p>
+<p><strong>再会！！！</strong></p>
+<p>2022.04.04</p>
+<p>找到复制粘贴的解决方案：</p>
+<p>就是先执行上面的1、2</p>
+<p>再执行下面的两行命令</p>
+<pre><code>sudo apt-get install open-vm-tools
+sudo apt-get install open-vm-tools-desktop
+</code></pre>
+<p>最后执行5</p>
+<p>备注1：github可能要更改hosts文件才能连上、后面需要把vmware-user添加到自启动软件。</p>
+<p>备注2：主机和虚拟机版本差别过大的话，文件拖拽可能会蓝屏，但是复制粘贴是没问题的。</p>
+<p><strong>该方法多次重开机后，开始无法拖拽！！！</strong></p>
+<p>最后Ubuntu16.04应该是有bug的，我换成20.04就行了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[VMware+Ubuntu虚拟机环境搭建教程]]></title>
+        <id>https://zj11224.github.io/post/2022.01.18.VMware+Ubuntu虚拟机环境搭建教程/</id>
+        <link href="https://zj11224.github.io/post/2022.01.18.VMware+Ubuntu虚拟机环境搭建教程/">
+        </link>
+        <updated>2022-01-17T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>我们这里主要针对ubuntu系统安装完毕后的以下问题。</p>
+<p>联网、换源、中文环境。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="准备工作"><strong>准备工作</strong></h4>
+<p>VMware <a href="https://www.vmware.com/cn/products/workstation-pro.html">官网下载</a>: 下载试用版，然后去网上找激活码激活</p>
+<p>ubuntu <a href="http://mirrors.aliyun.com/ubuntu-releases/16.04/">镜像下载</a>: 下载ubuntu16.04</p>
+<p>接着在VMware新建虚拟机，挂载ubuntu的iso文件，剩下的按照他的流程走即可。</p>
+<h4 id="一-联网"><strong>一、联网</strong></h4>
+<h5 id="1-vmware虚拟网卡配置"><strong>1、VMware虚拟网卡配置</strong></h5>
+<p>Workstation -&gt; 编辑 -&gt; 虚拟网络编辑器</p>
+<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.1.%E6%B7%BB%E5%8A%A0%E8%99%9A%E6%8B%9F%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
+<p>添加网络 -&gt; 选择VMnet8, 显示如下:</p>
+<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.2.%E8%99%9A%E6%8B%9F%E7%BD%91%E5%8D%A1%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>更改NAT设置</p>
+<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.3.nat%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>更改DHCP设置</p>
+<figure data-type="image" tabindex="4"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.4.dhcp%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<h5 id="2-本地适配器设置"><strong>2、本地适配器设置</strong></h5>
+<p>右键WIFI图标 -&gt; 打开网络和Internet设置 -&gt; 下滑找到更改适配器 -&gt; 点击，显示如下：</p>
+<figure data-type="image" tabindex="5"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.2.1.%E6%9C%AC%E5%9C%B0%E7%BD%91%E7%BB%9C%E9%80%82%E9%85%8D%E5%99%A8%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>点击VMnet8 -&gt; 属性 -&gt; &quot;Internet协议版本4(TCP/IPv4)&quot; -&gt; 修改ip(网段要和虚拟网卡相同)，显示如下：</p>
+<figure data-type="image" tabindex="6"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.2.2.vmnet8%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<h5 id="3-ubuntu网卡设置"><strong>3、ubuntu网卡设置</strong></h5>
+<p>右键右上角上下箭头图标(网络) -&gt; Edit connections... -&gt; Add，显示如下：</p>
+<figure data-type="image" tabindex="7"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.1.ubuntu%E7%BD%91%E5%8D%A1%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.2.ubuntu%E5%A2%9E%E5%8A%A0%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
+<p>选中新添加网卡 -&gt; Edit -&gt; Ethernet -&gt; Device -&gt; ens33网卡，显示如下：</p>
+<figure data-type="image" tabindex="9"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.3.ubuntu%E8%AE%BE%E7%BD%AE%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
+<p>可能有些人的ubuntu不是16版本，就没有ens33这张网卡，可以通过ifconfig查看自己初始网卡是什么</p>
+<figure data-type="image" tabindex="10"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.4.%E6%A3%80%E6%9F%A5%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
+<p>到此网络配置结束。</p>
+<h5 id="4-网络检测"><strong>4、网络检测</strong></h5>
+<p>ubuntuIP通过ifconfig查看，本机IP通过ipconfig查看，可以相互ping以下，我这里是通的。</p>
+<figure data-type="image" tabindex="11"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.4.1.%E8%99%9A%E6%8B%9F%E6%9C%BAping%E4%B8%BB%E6%9C%BA.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="12"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.4.2.%E4%B8%BB%E6%9C%BAping%E8%99%9A%E6%8B%9F%E6%9C%BA.png" alt="" loading="lazy"></figure>
+<p>ubuntu网卡这是这里其实可以通过命令行实现，但是这里有个前提。</p>
+<p>即使通过命令行配置，图形化的配置也会覆盖掉命令行，所以需要先删除网卡配置图形化功能模块。</p>
+<pre><code>网卡文件路径：/etc/network/interfaces
+dns文件路径: /etc/ersolv.conf
+</code></pre>
+<p>dns文件是通过网卡文件生成的，也就是你配置了dns文件，下次开机也会重置，dns要在网卡文件里面配置。</p>
+<p>但是dns文件配置后是有效的，只是下次开机重置了，只针对这次。</p>
+<h4 id="二-换源"><strong>二、换源</strong></h4>
+<p>把国外的源换成本地的源，加快下载功能模块速度</p>
+<h5 id="1-通过图形化界面换源"><strong>1、通过图形化界面换源</strong></h5>
+<p>System Settings（设置） -&gt; Software&amp;Updates，显示如下：</p>
+<figure data-type="image" tabindex="13"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2.1.1.%E6%8D%A2%E6%BA%90.png" alt="" loading="lazy"></figure>
+<p>Download from -&gt; Others -&gt; China -&gt; 随便选，显示如下：</p>
+<figure data-type="image" tabindex="14"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2.1.2.%E6%8D%A2%E6%BA%90.png" alt="" loading="lazy"></figure>
+<h5 id="2-通过命令行换源"><strong>2、通过命令行换源</strong></h5>
+<pre><code>sudo gedit /etc/apt/sources.list
+</code></pre>
+<p>清空里面内容，同时把下面内容复制上去</p>
+<pre><code>deb http://mirrors.aliyun.com/ubuntu/ xenial main
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main
+
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main
+
+deb http://mirrors.aliyun.com/ubuntu/ xenial universe
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+</code></pre>
+<p>更新</p>
+<pre><code>sudo apt-get update
+</code></pre>
+<p>完成</p>
+<h5 id="3-可能会遇到的问题"><strong>3、可能会遇到的问题</strong></h5>
+<p>sources.list被占用，杀死占用进程</p>
+<pre><code> sudo fuser -vki /var/lib/apt/lists/lock
+</code></pre>
+<p>更新过程卡住</p>
+<pre><code>sudo apt-get clean
+sudo apt-get update
+</code></pre>
+<p>像下面的错误大概是链接复制错了，重新复制一下</p>
+<figure data-type="image" tabindex="15"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2.2.1.%E6%8D%A2%E6%BA%90%E9%97%AE%E9%A2%98.png" alt="" loading="lazy"></figure>
+<h4 id="三-中文环境"><strong>三、中文环境</strong></h4>
+<p>Language Support -&gt; Install/Remove Language... -&gt; Chinese，显示如下：</p>
+<figure data-type="image" tabindex="16"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.1.%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E4%B8%8B%E8%BD%BD.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="17"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.2.%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>点击Language Support，选择汉语，应用，显示如下：</p>
+<figure data-type="image" tabindex="18"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.3.%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>更改成功，重启虚拟机，显示如下：</p>
+<figure data-type="image" tabindex="19"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.4.%E4%B8%AD%E6%96%87%E7%95%8C%E9%9D%A2.png" alt="" loading="lazy"></figure>
+<h5 id="下载中文输入法"><strong>下载中文输入法</strong></h5>
+<p>Language Support -&gt; Keyboard input method system -&gt; fcitx，显示如下</p>
+<figure data-type="image" tabindex="20"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.2.1.%E8%BE%93%E5%85%A5%E6%B3%95%E6%A1%86%E6%9E%B6.png" alt="" loading="lazy"></figure>
+<p>下载搜狗输入法</p>
+<pre><code>sudo dpkg -i sogoupinyin_2.2.0.0108_amd64.deb
+sudo apt-get install -f
+</code></pre>
+<figure data-type="image" tabindex="21"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.2.2.%E4%BD%BF%E7%94%A8%E8%BE%93%E5%85%A5%E6%B3%95.png" alt="" loading="lazy"></figure>
+<p>至此，ubuntu环境基本搭建完成。</p>
+<p><strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Gridea+GitHub个人网站搭建教程]]></title>
+        <id>https://zj11224.github.io/post/2022.01.15.Gridea+GitHub个人网站搭建教程/</id>
+        <link href="https://zj11224.github.io/post/2022.01.15.Gridea+GitHub个人网站搭建教程/">
+        </link>
+        <updated>2022-01-15T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>虽然GitHub存在部分不用翻墙的站点，但是Gridea生成网页时所使用的url链接，是必须要翻墙的。</p>
+<p>所以，下面的方法都是基于翻墙工具实现的。</p>
+<p>参考了以下两篇博客</p>
+<p><strong>大体配置</strong></p>
+<p><a href="https://imyshare.com/article/36/#:~:text=%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%BF%AB%E9%80%9F%E5%85%8D%E8%B4%B9%E5%BB%BA%E7%AB%99%E6%96%B9%E6%A1%88%201%20%E2%91%A0%E4%BD%BF%E7%94%A8GitHub%E6%88%96CODING%E5%85%8D%E8%B4%B9%E6%89%98%E7%AE%A1%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E9%A1%B5%E9%9D%A2%EF%BC%8C%E5%B9%B6%E9%85%8D%20...%202,%E2%91%A1%E4%BD%BF%E7%94%A8Gridea%E8%BD%AF%E4%BB%B6%2B%E5%85%8D%E8%B4%B9%E7%BD%91%E7%AB%99%E4%B8%BB%E9%A2%98%EF%BC%8C%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%BD%91%E7%AB%99%E7%9A%84%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%20...%203%20%E2%91%A2%E5%B0%86%E8%87%AA%E5%B7%B1%E7%9A%84%E7%8B%AC%E7%AB%8B%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E5%88%B0%E5%85%8D%E8%B4%B9%E7%9A%84%E6%89%98%E7%AE%A1%E6%9C%8D%E5%8A%A1%E4%B8%8A%EF%BC%8C%E5%AE%9E%E7%8E%B0%E7%8B%AC%E7%AB%8B%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%E7%BD%91">零基础快速搭建一个属于自己的网站或博客，仅需一天，且完全免费！！！</a></p>
+<p><strong>Gridea配置细节</strong></p>
+<p><a href="https://www.luoyelusheng.com/post/Gridea%E5%90%8C%E6%AD%A5github%E5%A4%B1%E8%B4%A5%E6%9C%80%E7%BB%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Gridea同步github失败最终解决方案</a></p>
+<h3 id="开始"><strong>开始</strong></h3>
+<p>搭建思路如下：</p>
+<ol>
+<li>使用GitHub的仓库来免费获取二级域名，同时通过该仓库存放自己的博客</li>
+<li>使用Gridea自动生成网页，通过Gridea操作博客</li>
+</ol>
+<h4 id="一-拥有一个github账号这里就是普通的注册"><strong>一、拥有一个GitHub账号（这里就是普通的注册）</strong></h4>
+<h4 id="二-创建仓库并生成二级域名用户名githubio"><strong>二、创建仓库，并生成二级域名（用户名.github.io）</strong></h4>
+<p>创建仓库</p>
+<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/1.1.%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93.png" alt="" loading="lazy"></figure>
+<p>设置仓库</p>
+<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/1.2.%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<h4 id="三-生成一个token用于gridea同步"><strong>三、生成一个token，用于gridea同步</strong></h4>
+<p>点击头像 -&gt; settings -&gt; developer settins -&gt; personal access tokens -&gt; Generate new token</p>
+<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.1.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.2.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.3.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>勾选repo，然后生成token，记得把token复制下来。</p>
+<p>token只会在生成时显示，后面都看不到了。</p>
+<figure data-type="image" tabindex="6"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.4.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<h4 id="四-gridea配置"><strong>四、Gridea配置</strong></h4>
+<p><a href="https://gridea.dev/">Gridea网站</a></p>
+<figure data-type="image" tabindex="7"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/3.gridea%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<p>其中因为同步要连接外网，所以需要使用科学上网工具（代理），通过代理连接到网络。</p>
+<p>那么这里就需要让Gridea的流量都走代理的端口，这里需要用到下面的proxifier软件进行配置。</p>
+<h4 id="五-proxifier配置"><strong>五、proxifier配置</strong></h4>
+<p>Mac版本地址：https://www.macwk.com/soft/proxifier<br>
+Window版本地址：https://www.hanzify.org/software/13717.html</p>
+<p>我这里使用Windows汉化版进行演示。</p>
+<p>下载完毕后打开代理服务器</p>
+<figure data-type="image" tabindex="8"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.1.%E7%82%B9%E5%87%BB%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt="image-20220115225614046" loading="lazy"></figure>
+<p>然后添加代理服务器</p>
+<figure data-type="image" tabindex="9"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.2.%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE.png" alt="image-20220115225823932" loading="lazy"></figure>
+<p>地址填127.0.0.1即可。</p>
+<p>但是端口必须填你的<strong>代理（VPN）socks使用的端口号</strong></p>
+<figure data-type="image" tabindex="10"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.3.%E4%BB%A3%E7%90%86%E7%AB%AF%E5%8F%A3%E5%B1%95%E7%A4%BA.png" alt="image-20220115230038953" loading="lazy"></figure>
+<p>配置完检查以下，这个代理是否可用</p>
+<figure data-type="image" tabindex="11"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.4.%E6%A3%80%E6%9F%A5%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt="image-20220115230211336" loading="lazy"></figure>
+<p>检查没有问题后，接着配置代理规则</p>
+<figure data-type="image" tabindex="12"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.2.2.%E4%BB%A3%E7%90%86%E8%A7%84%E5%88%99%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="13"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.2.1.%E7%82%B9%E5%87%BB%E4%BB%A3%E7%90%86%E8%A7%84%E5%88%99.png" alt="" loading="lazy"></figure>
+<p>最后配置dns设置</p>
+<figure data-type="image" tabindex="14"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.3.1.%E7%82%B9%E5%87%BBdns.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="15"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.3.2.%E9%85%8D%E7%BD%AEdns%E8%A7%A3%E6%9E%90%E8%A7%84%E5%88%99.png" alt="" loading="lazy"></figure>
+<p>至此，所有配置完毕，点击同步。</p>
+<figure data-type="image" tabindex="16"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/5.1.%E5%90%8C%E6%AD%A5%E6%88%90%E5%8A%9F.png" alt="" loading="lazy"></figure>
+<p>输入连接：用户名.github.io</p>
+<figure data-type="image" tabindex="17"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/5.2.%E7%95%8C%E9%9D%A2%E5%B1%95%E7%A4%BA.png" alt="image-20220115231432784" loading="lazy"></figure>
+<p>接下来就可以在gridea中更换主题，添加博客了。</p>
+<p>这里推荐用typora写博客，然后放到Gridea上。</p>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+</feed>

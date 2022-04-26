@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>Ubuntu+go环境配置 | ZJ Blog</title>
+        <link rel="stylesheet" href="https://zj11224.github.io/styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://zj11224.github.io">ZJ Blog</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">温故而知新</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">Ubuntu+go环境配置</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-26 00:00:00">2022-04-26 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
+<p>简单记录下，linux下go环境配置的坑</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-下载go安装包"><strong>一、下载GO安装包</strong></h4>
+<p>可以通过命令行下载（需要国内源）：<br>
+<code>sudo apt-get install go</code><br>
+但是这样无法选定安装路径，而且版本可能会过低，不推荐。</p>
+<p>这里建议通过wget方式安装<br>
+下载（国内镜像站）： https://studygolang.com/dl/golang/go1.15.linux-amd64.tar.gz<br>
+解压：<code>sudo tar -C /usr/local -zxvf go1.15.linux-amd64.tar.gz</code></p>
+<h4 id="二-配置环境变量"><strong>二、配置环境变量</strong></h4>
+<p>先打开环境变量配置文件<br>
+<code>sudo vim ~/.bashrc</code></p>
+<p>这里推荐<code>~/.bashrc</code><br>
+因为之前尝试配置<code>/etc/profile</code>和<code>~/.profile</code>都出现过<strong>重开机后需要手动刷新</strong>的情况，非常奇怪<br>
+这里推荐home目录下的<code>./bashrc</code></p>
+<p>添加以下三行配置并保存退出</p>
+<pre><code class="language-shell">export GOROOT=/usr/local/go		#go解压位置
+export GOPATH=/home/username/go #开发者目录
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+</code></pre>
+<p>通过下面命令刷新，或者重启<br>
+<code>source ~/.bashrc</code></p>
+<h4 id="三-go-module设置"><strong>三、GO MODULE设置</strong></h4>
+<p>运行<code>go version</code><br>
+若出现<code>go version go1.15 linux/amd64</code><br>
+则说明配置成功</p>
+<p>通过<code>go env</code>查看go的详细信息<br>
+通过<code>go env -w GO111MODULE=on</code> 将GO111MODULE设置为开始，若已经启用，跳过<br>
+通过<code>go env -w GOPROXY=https://goproxy.cn,direct</code> 将代理设置为国内源方便后面git clone</p>
+<p>在你的工程文件夹下，输入以下命令<br>
+<code>go mod init xxx</code><br>
+xxx为你的项目名，不一定要和工程文件夹名相同</p>
+<p>但是后面你的导入自己的包就要用到这个module名<br>
+比如：<code>import xxx/packageName</code></p>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.04.26.VS Code+Ubuntu远程连接配置/">VS Code+Ubuntu远程连接配置</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://zj11224.github.io/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p><a>Powered by Gridea</a>
+<a>Theme Song by shanbufun</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>
