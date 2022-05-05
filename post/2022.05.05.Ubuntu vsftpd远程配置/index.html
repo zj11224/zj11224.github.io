@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>Ubuntu vsftpd远程配置 | ZJ Blog</title>
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">ZJ Blog</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">温故而知新</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">Ubuntu vsftpd远程配置</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-05-05 00:00:00">2022-05-05 / 4 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
+<p>记录个人ubuntu16.04中vsftpd服务的配置。</p>
+<p>配置结束后，部分cmd命令无法远程，但是可以通过资源管理器地址栏登录，就可以上传下载文件。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-安装vsftpd服务">一、安装vsftpd服务</h4>
+<pre><code class="language-shell"># 安装vsftpd
+sudo apt-get install vsftpd
+sudo service vsftpd start|stop|restart
+# 服务自启动
+sudo systemctl start vsftpd.service
+# 连接端口为21，通过查看端口21是否监听，可看出ftp服务是否启动
+sudo netstat -nltp | grep 21
+</code></pre>
+<h4 id="二-创建本地用户">二、创建本地用户</h4>
+<pre><code class="language-shell">sudo mkdir /home/ftp
+# 添加用户，-d指定用户目录，-s指定用户登录终端
+sudo useradd -d /home/ftp -s /bin/bash ftp	
+# 仅通过ftp登录
+sudo usermod -s /sbin/nologin ftp
+# 设置密码
+sudo passwd ftp
+	password
+# 设置/home/ftp文件夹拥有者为ftp，使用者group为ftp
+sudo chown ftp:ftp /home/ftp
+</code></pre>
+<h4 id="三-虚拟用户创建可跳过">三、虚拟用户创建（可跳过）</h4>
+<pre><code class="language-shell"># 创建user.txt，文本格式为一行username，一行password
+vim user.txt
+	username1
+	password1
+	username2
+	password2
+	...
+
+# 安装生成数据库文件的软件
+sudo apt-get install db-util
+# 将虚拟用户文件加密
+sudo db_load -T -t hash -f /home/user.txt /etc/vsftpd_login.db
+sudo chmod 600 /etc/vsftpd_login.db
+
+# 存在bug，不能配置该文件，删掉
+sudo rm /etc/pam.d/vsftpd
+# 虚拟用户登录文件配置
+vim /etc/pam.d/vsftpd.vu
+	auth required pam_userdb.so db=/etc/vsftpd_login
+	account required pam_userdb.so db=/etc/vsftpd_login
+</code></pre>
+<h4 id="四-设置文件基本配置">四、设置文件基本配置</h4>
+<pre><code class="language-shell"># 编辑vsftpd配置文件
+sudo vim /etc/vsftpd.conf
+	listen=NO
+	listen_ipv6=YES
+	# 匿名
+	anonymous_enable=YES|NO		
+	# 本地
+	local_enable=YES|NO		
+    # 虚拟
+	guest_enable=YES|NO
+    # 虚拟用户所使用用户
+	guest_username=ftp
+	# 虚拟用户数据库文件路径，文件在/etc/pam.d/
+	pam_service_name=vsftpd.vu	
+	
+	# 用户访问列表是否启用
+	userlist_enable=YES|NO				
+	userlist_file=/etc/vsftpd/vsftpd.user_list
+	# YES:黑名单,NO:白名单
+	userlist_deny=NO					
+	
+	# 禁止访问ftp根目录以外路径
+    chroot_local_user=YES
+    # 是否开启白名单
+	chroot_list_enable=YES
+    # 白名单
+	chroot_list_file=/etc/vsftpd/vsftpd.chroot_list
+	# 开启写模式
+	allow_writeable_chroot=YES					
+	
+	# 用户各自配置文件夹
+	user_config_dir=/etc/vsftpd/vsftpd_user_conf	
+	
+	# 开启ip访问控制列表，配置文件在/etc/hosts.allow|hosts.deny
+	tcp_wrappers=YES
+	
+	# 默认配置 #
+	local_mask=022
+	dirmessage_enable=YES
+	xferlog_enable=YES
+	connect_from_port_20=YES
+</code></pre>
+<h4 id="五-各类文件配置格式">五、各类文件配置格式</h4>
+<pre><code class="language-shell"># 用户访问其他路径控制列表
+sudo vim /etc/vsftpd/vsftpd.chroot_list
+	username1
+	username2
+	...
+
+# 用户配置列表文件夹
+sudo mkdir /etc/vsftpd/vsftpd_user_conf
+# 更改对应用户名文件
+vim /etc/vsftpd/vsftpd_user_conf/ftp
+	# 禁止删除命令
+	cmds_denied=DELE			
+	...
+
+# 用户访问vsftpd控制列表
+sudo vim /etc/vsftpd.user_list			
+	username1
+	username2
+	...
+
+# ip访问vsftpd控制列表
+sudo vim /etc/hosts.allow
+	# vsftpd:ALL
+	vsftpd:192.168.5.0/255.255.255.0
+	...
+sudo vim /etc/hosts.deny
+	...
+</code></pre>
+<h4 id="六-用户各自配置文件">六、用户各自配置文件</h4>
+<pre><code class="language-shell"># 用户各自配置文件
+vim /etc/vsftpd_user_conf/username
+	# 设置根目录
+	local_root=/home/ftp
+	
+	# 开启上传文件所属更改
+	chown_uploads=YES
+	# 文件所属ftp用户
+	chown_username=ftp	
+	
+	# 具体参数参考这篇博客 #
+	# https://www.cnblogs.com/ssrs-wanghao/articles/13751408.html #
+    write_enable=YES
+    anon_world_readable_only=NO 
+    anon_upload_enable=YES 
+    anon_mkdir_write_enable=YES
+    anon_other_write_enable=YES
+</code></pre>
+<h4 id="七-遇到的问题">七、遇到的问题</h4>
+<p>这里说几个我遇到的错误代码：</p>
+<p>500：如果用户被限定在了其主目录下，则该用户的主目录不能再具有写权限了！如果检查发现还		有写权限，就会报该错误。<br>
+去除主目录的写权限：<code>$ sudo chmod a-w /home/user</code><br>
+或者配置文件添加：<code>allow_writeable_chroot=YES</code></p>
+<p>550/425：未解决，初步推测是网络传输和端口控制的问题（但是我服务机并没有防火墙服务）。</p>
+<p>但若通过资源管理器的地址栏登录，可以直接复制粘贴文件，以上问题就不会出现。</p>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/2022.04.26.Ubuntu Go环境配置/">Ubuntu Go环境配置</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p><a>Powered by Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>
