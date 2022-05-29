@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>Ubuntu vsftpd远程配置 | ZJ Blog</title>
+        <title>MapReduce框架 | ZJ Blog</title>
         <link rel="stylesheet" href="https://zj11224.github.io/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,163 +56,83 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">Ubuntu vsftpd远程配置</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-05-05 00:00:00">2022-05-05 / 4 min read</div>
+                                    <div class="post-title  mdui-m-b-1">MapReduce框架</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-05-20 00:00:00">2022-05-20 / 3 min read</div>
                                     <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
-<p>记录个人ubuntu16.04中vsftpd服务的配置。</p>
-<p>配置结束后，部分cmd命令无法远程，但是可以通过资源管理器地址栏登录，就可以上传下载文件。</p>
+<p>MIT6.824课程实验lab1--MapReduce框架</p>
+<p>后文的master等同于coordinator</p>
+<p>参考：<br>
+<a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html">官网lab1资料</a><br>
+<a href="https://zhuanlan.zhihu.com/p/122571315">MapReduce论文翻译</a><br>
+<a href="https://zhuanlan.zhihu.com/p/425093684">MapReduce实验代码、思路</a></p>
 <h3 id="开始"><strong>开始</strong></h3>
-<h4 id="一-安装vsftpd服务">一、安装vsftpd服务</h4>
-<pre><code class="language-shell"># 安装vsftpd
-sudo apt-get install vsftpd
-sudo service vsftpd start|stop|restart
-# 服务自启动
-sudo systemctl start vsftpd.service
-# 连接端口为21，通过查看端口21是否监听，可看出ftp服务是否启动
-sudo netstat -nltp | grep 21
+<h4 id="一-rpc通信">一、rpc通信</h4>
+<p>rpc包提供了通过网络或其他I/O连接对一个对象的导出方法的访问。服务端注册一个对象，使它作为一个服务被暴露，服务的名字是该对象的类型名。注册之后，对象的导出方法就可以被远程访问。</p>
+<p>因为进程之间需要通信，如work从master领取任务，work告诉master自己任务状态。<br>
+这个通信过程我们通过rpc完成。</p>
+<h5 id="1-服务端注册监听">1、服务端注册监听</h5>
+<pre><code class="language-go">func (c *Coordinator) server() {
+    // 注册
+    rpc.Register(c)
+    // http监听
+    rpc.HandleHTTP()
+    l, e := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
+    if e != nil {
+        log.Fatal(&quot;listen error:&quot;, e)
+    }
+    // 指定监听端口
+    go http.Serve(l, nil)
+}
 </code></pre>
-<h4 id="二-创建本地用户">二、创建本地用户</h4>
-<pre><code class="language-shell">sudo mkdir /home/ftp
-# 添加用户，-d指定用户目录，-s指定用户登录终端
-sudo useradd -d /home/ftp -s /bin/bash ftp	
-# 仅通过ftp登录
-sudo usermod -s /sbin/nologin ftp
-# 设置密码
-sudo passwd ftp
-	password
-# 设置/home/ftp文件夹拥有者为ftp，使用者group为ftp
-sudo chown ftp:ftp /home/ftp
+<pre><code class="language-go">// 可以被客户端调用的函数必须符合以下两个条件
+// 1、两个参数
+// 2、返还值error
+func (c *Coordinator) DistributeJob(args, reply *Job) error {}
 </code></pre>
-<h4 id="三-虚拟用户创建可跳过">三、虚拟用户创建（可跳过）</h4>
-<pre><code class="language-shell"># 创建user.txt，文本格式为一行username，一行password
-vim user.txt
-	username1
-	password1
-	username2
-	password2
-	...
-
-# 安装生成数据库文件的软件
-sudo apt-get install db-util
-# 将虚拟用户文件加密
-sudo db_load -T -t hash -f /home/user.txt /etc/vsftpd_login.db
-sudo chmod 600 /etc/vsftpd_login.db
-
-# 存在bug，不能配置该文件，删掉
-sudo rm /etc/pam.d/vsftpd
-# 虚拟用户登录文件配置
-vim /etc/pam.d/vsftpd.vu
-	auth required pam_userdb.so db=/etc/vsftpd_login
-	account required pam_userdb.so db=/etc/vsftpd_login
+<h5 id="2-客户端呼叫服务端">2、客户端呼叫服务端</h5>
+<pre><code class="language-go">client, err := rpc.DialHTTP(&quot;tcp&quot;, serverAddress + &quot;:1234&quot;)
+if err != nil {
+	log.Fatal(&quot;dialing:&quot;, err)
+}
 </code></pre>
-<h4 id="四-设置文件基本配置">四、设置文件基本配置</h4>
-<pre><code class="language-shell"># 编辑vsftpd配置文件
-sudo vim /etc/vsftpd.conf
-	listen=NO
-	listen_ipv6=YES
-	# 匿名
-	anonymous_enable=YES|NO		
-	# 本地
-	local_enable=YES|NO		
-    # 虚拟
-	guest_enable=YES|NO
-    # 虚拟用户所使用用户
-	guest_username=ftp
-	# 虚拟用户数据库文件路径，文件在/etc/pam.d/
-	pam_service_name=vsftpd.vu	
-	
-	# 用户访问列表是否启用
-	userlist_enable=YES|NO				
-	userlist_file=/etc/vsftpd/vsftpd.user_list
-	# YES:黑名单,NO:白名单
-	userlist_deny=NO					
-	
-	# 禁止访问ftp根目录以外路径
-    chroot_local_user=YES
-    # 是否开启白名单
-	chroot_list_enable=YES
-    # 白名单
-	chroot_list_file=/etc/vsftpd/vsftpd.chroot_list
-	# 开启写模式
-	allow_writeable_chroot=YES					
-	
-	# 用户各自配置文件夹
-	user_config_dir=/etc/vsftpd/vsftpd_user_conf	
-	
-	# 开启ip访问控制列表，配置文件在/etc/hosts.allow|hosts.deny
-	tcp_wrappers=YES
-	
-	# 默认配置 #
-	local_mask=022
-	dirmessage_enable=YES
-	xferlog_enable=YES
-	connect_from_port_20=YES
+<h5 id="3-客户端调用服务端方法">3、客户端调用服务端方法</h5>
+<pre><code class="language-go">var args, reply int
+// 参数类型要和服务端函数相同
+err = client.Call(&quot;Coordinator.DistributeJob&quot;, args, &amp;reply)
+if err != nil {
+	log.Fatal(&quot;Coordinator error:&quot;, err)
+}
 </code></pre>
-<h4 id="五-各类文件配置格式">五、各类文件配置格式</h4>
-<pre><code class="language-shell"># 用户访问其他路径控制列表
-sudo vim /etc/vsftpd/vsftpd.chroot_list
-	username1
-	username2
-	...
-
-# 用户配置列表文件夹
-sudo mkdir /etc/vsftpd/vsftpd_user_conf
-# 更改对应用户名文件
-vim /etc/vsftpd/vsftpd_user_conf/ftp
-	# 禁止删除命令
-	cmds_denied=DELE			
-	...
-
-# 用户访问vsftpd控制列表
-sudo vim /etc/vsftpd.user_list			
-	username1
-	username2
-	...
-
-# ip访问vsftpd控制列表
-sudo vim /etc/hosts.allow
-	# vsftpd:ALL
-	vsftpd:192.168.5.0/255.255.255.0
-	...
-sudo vim /etc/hosts.deny
-	...
-</code></pre>
-<h4 id="六-用户各自配置文件">六、用户各自配置文件</h4>
-<pre><code class="language-shell"># 用户各自配置文件
-vim /etc/vsftpd_user_conf/username
-	# 设置根目录
-	local_root=/home/ftp
-	
-	# 开启上传文件所属更改
-	chown_uploads=YES
-	# 文件所属ftp用户
-	chown_username=ftp	
-	
-	# 具体参数参考这篇博客 #
-	# https://www.cnblogs.com/ssrs-wanghao/articles/13751408.html #
-    write_enable=YES
-    anon_world_readable_only=NO 
-    anon_upload_enable=YES 
-    anon_mkdir_write_enable=YES
-    anon_other_write_enable=YES
-</code></pre>
-<h4 id="七-遇到的问题">七、遇到的问题</h4>
-<p>这里说几个我遇到的错误代码：</p>
-<p>500：如果用户被限定在了其主目录下，则该用户的主目录不能再具有写权限了！如果检查发现还		有写权限，就会报该错误。<br>
-去除主目录的写权限：<code>$ sudo chmod a-w /home/user</code><br>
-或者配置文件添加：<code>allow_writeable_chroot=YES</code></p>
-<p>550/425：未解决，初步推测是网络传输和端口控制的问题（但是我服务机并没有防火墙服务）。</p>
-<p>但若通过资源管理器的地址栏登录，可以直接复制粘贴文件，以上问题就不会出现。</p>
-<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+<h4 id="二-枚举">二、枚举</h4>
+<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/enum.jpg" alt="enum" loading="lazy"></figure>
+<h4 id="三-结构体">三、结构体</h4>
+<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/struct.jpg" alt="struct" loading="lazy"></figure>
+<h4 id="四-关键分配任务逻辑">四、关键分配任务逻辑</h4>
+<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/distribute.jpg" alt="distribute" loading="lazy"></figure>
+<h4 id="五-细节">五、细节</h4>
+<ol>
+<li>先监听服务再执行channel，不然work无法获得任务（本质是channel堵塞无法往下执行）。</li>
+<li>channel默认一个缓存，当里面的数据没有被接收时会堵塞。<br>
+以为创建发送任务和接收任务并发执行，所以建议初始化channel缓存长度大于任务数。</li>
+<li>shell脚本循环执行命令，只有上一条命令完成时，才会执行下一条命令，不是并发执行。<br>
+想要并发执行，命令后面添加&amp;（后台同时执行）。</li>
+<li>rpc中Call，参数必须实例化！！！</li>
+</ol>
+<h4 id="五-完善">五、完善</h4>
+<p>目前只基本实现了功能，后面的crash.go的随机kill和延迟还没有解决。<br>
+而且是参照大佬的实验步骤，所以部分细节还是有一些迷糊。</p>
+<p>因为后面的raft大作业需要用到，先到lab2学习。</p>
+<hr>
+<p>所有的实验步骤到此结束，<strong>再会！！！</strong></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://zj11224.github.io/post/2022.05.20.MapReduce框架/">MapReduce框架</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.04.26.Ubuntu Go环境配置/">Ubuntu Go环境配置</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.05.05.Ubuntu vsftpd远程配置/">Ubuntu vsftpd远程配置</a></div> </div>
                                        
                                       </div>
                                    

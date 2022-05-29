@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zj11224.github.io</id>
     <title>ZJ Blog</title>
-    <updated>2022-05-05T15:34:00.800Z</updated>
+    <updated>2022-05-29T07:20:02.573Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zj11224.github.io"/>
     <link rel="self" href="https://zj11224.github.io/atom.xml"/>
@@ -10,6 +10,80 @@
     <logo>https://zj11224.github.io/images/avatar.png</logo>
     <icon>https://zj11224.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, ZJ Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[MapReduce框架]]></title>
+        <id>https://zj11224.github.io/post/2022.05.20.MapReduce框架/</id>
+        <link href="https://zj11224.github.io/post/2022.05.20.MapReduce框架/">
+        </link>
+        <updated>2022-05-19T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>MIT6.824课程实验lab1--MapReduce框架</p>
+<p>后文的master等同于coordinator</p>
+<p>参考：<br>
+<a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html">官网lab1资料</a><br>
+<a href="https://zhuanlan.zhihu.com/p/122571315">MapReduce论文翻译</a><br>
+<a href="https://zhuanlan.zhihu.com/p/425093684">MapReduce实验代码、思路</a></p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-rpc通信">一、rpc通信</h4>
+<p>rpc包提供了通过网络或其他I/O连接对一个对象的导出方法的访问。服务端注册一个对象，使它作为一个服务被暴露，服务的名字是该对象的类型名。注册之后，对象的导出方法就可以被远程访问。</p>
+<p>因为进程之间需要通信，如work从master领取任务，work告诉master自己任务状态。<br>
+这个通信过程我们通过rpc完成。</p>
+<h5 id="1-服务端注册监听">1、服务端注册监听</h5>
+<pre><code class="language-go">func (c *Coordinator) server() {
+    // 注册
+    rpc.Register(c)
+    // http监听
+    rpc.HandleHTTP()
+    l, e := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
+    if e != nil {
+        log.Fatal(&quot;listen error:&quot;, e)
+    }
+    // 指定监听端口
+    go http.Serve(l, nil)
+}
+</code></pre>
+<pre><code class="language-go">// 可以被客户端调用的函数必须符合以下两个条件
+// 1、两个参数
+// 2、返还值error
+func (c *Coordinator) DistributeJob(args, reply *Job) error {}
+</code></pre>
+<h5 id="2-客户端呼叫服务端">2、客户端呼叫服务端</h5>
+<pre><code class="language-go">client, err := rpc.DialHTTP(&quot;tcp&quot;, serverAddress + &quot;:1234&quot;)
+if err != nil {
+	log.Fatal(&quot;dialing:&quot;, err)
+}
+</code></pre>
+<h5 id="3-客户端调用服务端方法">3、客户端调用服务端方法</h5>
+<pre><code class="language-go">var args, reply int
+// 参数类型要和服务端函数相同
+err = client.Call(&quot;Coordinator.DistributeJob&quot;, args, &amp;reply)
+if err != nil {
+	log.Fatal(&quot;Coordinator error:&quot;, err)
+}
+</code></pre>
+<h4 id="二-枚举">二、枚举</h4>
+<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/enum.jpg" alt="enum" loading="lazy"></figure>
+<h4 id="三-结构体">三、结构体</h4>
+<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/struct.jpg" alt="struct" loading="lazy"></figure>
+<h4 id="四-关键分配任务逻辑">四、关键分配任务逻辑</h4>
+<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/distribute.jpg" alt="distribute" loading="lazy"></figure>
+<h4 id="五-细节">五、细节</h4>
+<ol>
+<li>先监听服务再执行channel，不然work无法获得任务（本质是channel堵塞无法往下执行）。</li>
+<li>channel默认一个缓存，当里面的数据没有被接收时会堵塞。<br>
+以为创建发送任务和接收任务并发执行，所以建议初始化channel缓存长度大于任务数。</li>
+<li>shell脚本循环执行命令，只有上一条命令完成时，才会执行下一条命令，不是并发执行。<br>
+想要并发执行，命令后面添加&amp;（后台同时执行）。</li>
+<li>rpc中Call，参数必须实例化！！！</li>
+</ol>
+<h4 id="五-完善">五、完善</h4>
+<p>目前只基本实现了功能，后面的crash.go的随机kill和延迟还没有解决。<br>
+而且是参照大佬的实验步骤，所以部分细节还是有一些迷糊。</p>
+<p>因为后面的raft大作业需要用到，先到lab2学习。</p>
+<hr>
+<p>所有的实验步骤到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Ubuntu vsftpd远程配置]]></title>
         <id>https://zj11224.github.io/post/2022.05.05.Ubuntu vsftpd远程配置/</id>
@@ -638,7 +712,7 @@ Window版本地址：https://www.hanzify.org/software/13717.html</p>
 这里推荐用typora写博客，然后放到Gridea上。</p>
 <p>所有的配置到此结束，<strong>再会！！！</strong></p>
 <p>2022.05.05<br>
-Gridea好像失效了，建议是通过Gridea生成配置文件（output），然后手动将文件发到github上（可使用GitHub Desktop）。</p>
+Gridea好像失效了，建议是通过Gridea<strong>同步</strong>生成配置文件（output/），然后手动将文件发到github上（可使用GitHub Desktop）。</p>
 ]]></content>
     </entry>
 </feed>
