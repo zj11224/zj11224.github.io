@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>网络编程 | ZJ Blog</title>
+        <link rel="stylesheet" href="https://zj11224.github.io/styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://zj11224.github.io">ZJ Blog</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">温故而知新</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">网络编程</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-07-10 00:00:00">2022-07-10 / 8 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
+<p>堵塞IO：没有数据时堵塞，直到数据返还。</p>
+<p>非堵塞IO：没有数据时返还 err，有数据时返还数据。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-socket">一、socket</h4>
+<p>关键词：socket通信；socketfd；fd；io；</p>
+<ul>
+<li>socket 是什么？
+<ol>
+<li>数字</li>
+<li>文件</li>
+<li>文件描述符</li>
+<li>fd</li>
+</ol>
+</li>
+</ul>
+<p>以上理解都是对的，socket 本质上就是插座，为 tcp 通信提供具体的接口。</p>
+<ul>
+<li>fd是什么？</li>
+</ul>
+<p>socket() 函数创建一个 socketfd。</p>
+<p>注意：fd 本质上就是位图上的一位数字，从小到大创建。</p>
+<p>fd 可以看作是<strong>网络资源数值化</strong>的结果（五元组：源ip、目的ip、源端口、目的端口、协议）。</p>
+<p>fd --&gt; （sip, dip, sport, dport, tcp/udp)。</p>
+<p>可以将其当作一个客户端，同时具备一些 io 的属性。</p>
+<p>每个进程都有自己的文件系统空间，即 fd 都是内部分配，两个不同进程可能存在相同 fd，但是具体的含义是一样的，父子进程是可以继承 fd 的，即自己进程空间中都有一个fd，但是指向内核文件都是同一个，被记录在open files table这个表中，每个内核连接文件都有自己的send、revc buffer（内核态中）。</p>
+<p><code>ulimit -a</code> 可查看进程fd上限（open file）。</p>
+<ul>
+<li>io 是什么？</li>
+</ul>
+<p>内存（cpu）与外存、外设、内存以外通信都需要经过 io。</p>
+<p>内存与磁盘、网卡通信也是需要经过 io的。</p>
+<h4 id="二-sigio">二、sigio</h4>
+<p>关键词：sigio；协议栈；信号；进程信号；系统调用；</p>
+<p>为什么要了解 sigio 呢，这里涉及内核态的信号和回调机制。</p>
+<p>我们想像一下一个场景，客户端发送一个消息到服务器指定端口，首先由操作系统接收，然后操作系统通知进程，即将信号抛给进程，进程捕获到 sigio 信号，才能正常接收数据。</p>
+<p>比如 epoll_wait() 堵塞唤醒，就是因为收到了某个信号值。</p>
+<p>sigio 没有区分是哪个 fd。<br>
+udp 接收一个包，触发一次 sigio。<br>
+tcp 不可以这样，因为包太多了，处理的 sigio 会很多。<br>
+在协议栈中，控制 tcp 不去发 sigio。</p>
+<ul>
+<li>
+<p>进程的信号集怎么保存？</p>
+<p>每个进程都有用户态和内核态。</p>
+<p>进程内核态中有一块专门的空间用来存信号，总共有 31 种信号。</p>
+<p>sched.h -&gt; task_struct -&gt; sighand_struct -&gt; k_sigaction action[_NSIG]；</p>
+<p>其中 _NSIG = 64，表示信号存在 action[64] 中。</p>
+</li>
+<li>
+<p>调用 signal 函数时，信号怎么保存到进程中？</p>
+<p>比如，<code>kill -9 pid</code> 就是调用可执行文件 kill，然后调用系统函数 kill() 发送信号给对应进程。</p>
+<p>然后对应进程通过更改 action[sig - 1] 进行保存。</p>
+<p>上一个 sigio 没有触发的会被覆盖。</p>
+<p>本质</p>
+</li>
+<li>
+<p>信号如何发送的？</p>
+<p>通过调用系统函数向进程发送信号。</p>
+</li>
+</ul>
+<h4 id="三-select">三、select</h4>
+<p><code>select(fd_num，rdfs, wdfs, edfs, time_out)</code></p>
+<p>select 为了实现 io 多路复用，采取<strong>条件等待</strong>的方式，当有事件触发时，逐个询问，当前 fd 有事件触发，先将 fd 存放数组当中，轮询完毕后，再处理这些事件。</p>
+<p>rdfs、wdfs、edfs 在调用 select 前，需要设置成我们关心的对应 dfsets，select 返还时会重置三个 set，将就绪 fd 放入其中，因此每次调用前，都需要重置我们关心的 fd。</p>
+<p><code>time_out</code> 当没有事件触发，定时器倒计时完毕，也会激活 select。</p>
+<ul>
+<li>
+<p>监听 fd 数量限制</p>
+<p>由宏定义 FD_SETS 定义，即可使用 fd 最多数量，本质就是 bitmap 大小。</p>
+<p><code>cat /proc/sys/fs/file-max</code> 可查看最大 fd 数量。</p>
+<p>可以修改，但是可能会影响性能。</p>
+</li>
+<li>
+<p>采用线性扫描，效率较低</p>
+<p>调用时间复杂度是线性的，即O(n)。</p>
+<p>只知道有 IO 事件发生，却<strong>不知道具体是谁</strong>，无差别询问所有流。</p>
+</li>
+<li>
+<p>用户态数据拷贝到内核态</p>
+<p>每次 select 都需要将 rdfs、wdfs、edfs 从用户态拷贝到内核态。</p>
+<p>当 df 很多时，这个数据量会很大。</p>
+</li>
+</ul>
+<p>当 socket 较多时，每次都要遍历 FD_SIZE 个 socket， 会浪费很多 CPU 时间。</p>
+<p>如果能给 socket 注册对应回调函数，当他们活跃时，自动完成相关操作，即可避免轮询。</p>
+<p>这种机制就是后文要说的 epoll。</p>
+<p>注意：select 并不是<strong>轮询</strong>机制？</p>
+<h4 id="四-poll">四、poll</h4>
+<p>select 中 read、write、end 三种事件，三个参数。</p>
+<p>poll 中 将其合并，只用一个参数存储，仅此而已。</p>
+<h4 id="五-epoll">五、epoll</h4>
+<p>epoll 实现类似于被触发的事件存放在一个地方，然后通过 epoll_wait 函数取出被触发的事件，然后执行相应操作。</p>
+<p><code>epoll_create(int size)</code></p>
+<p>早期 size 表示就绪队列大小，现在只有 0 和 1 的区别。</p>
+<p><code>epoll_wait(epfd, events, length, timeout)</code></p>
+<p><code>timeout</code>：定期取出，-1 表示有数据才取。</p>
+<p><code>length</code>：每次取出的数量，建议总 io 的 100 分之 1。</p>
+<p><code>epoll_ctl(int epfd, int op, int fd, struct epoll_event* event)</code></p>
+<p><code>fd</code>：监听 fd。</p>
+<p>epoll_ctl做了两件事情：</p>
+<ul>
+<li>事件注册在红黑树（socketfd 作为 key）。</li>
+<li>和网卡驱动程序建立一个回调关系，检测到有事件发生，拷贝到就绪队列当中。</li>
+</ul>
+<p>被动连接（作为服务器），事件注册为EPOLLIN，第一次触发表示连接成功。</p>
+<p>主动连接（作为客户端），事件注册为EPOLLIOUT，第一次触发（第二次握手）表示连接成功。</p>
+<p>ET（边沿触发）：缓冲区状态变化（增、减）触发</p>
+<p>LT（水平触发）：有数据一直触发</p>
+<p>ET + 循环读（触发一次循环读取完）</p>
+<p>LT + 一次读（多次触发读取完毕）</p>
+<p>本质上都是一样的，多次读，但是ET是针对一个IO循环读，没有兼顾其他IO，所以建议用来处理小块数据。</p>
+<p>ET必须使用非阻塞IO。<br>
+因为ET是缓冲区变化才触发，需要循环读，直到读取不到数据才停止，而堵塞io会导致最后一次读取堵塞，无法结束。</p>
+<p>listenfd适合LT，防止丢失连接请求。</p>
+<p>epoll_wait会切换到内核态。</p>
+<p>epoll_wait 一次只能触发一个 listenfd，即取出来的 n 个事务，只有一个事务是关于 listenfd 的，只能连接一个客户端。<br>
+当出现大量客户端请求连接时，比如100个，那么 epoll_wait 需要触发100次，才能将这些连接事务处理完毕，但是每处理一个连接事务都要处理 n - 1 个其他事务，导致连接效率低下。</p>
+<p>多线程，但是可能出现以下情况：</p>
+<p>客户端在线程A中存在运行数据，然后后面在线程B中运行，这样就会导致一些数据竞争的问题，这里要求线程只处理数据，不存数据。</p>
+<p><strong>BUGS：</strong><br>
+在Linux内核版本2.6.9之前，EPOLL_CTL_DEL操作时，event必须是一个非空的指针，实际并没有使用。</p>
+<p>2.6.9内核版本以后可以直接设置为NULL。</p>
+<p>io多路复用：单线程或单进程同时监测若干个文件描述符是否可以执行IO操作的能力。</p>
+<p>reactor模型：对io的处理改为对事件的处理，通过事件驱动或事件回调的方式来实现驱动模型。</p>
+<p>握手和挥手都是协议栈处理的，io读写通道的关闭会影响协议栈消息的发出（关闭前发送消息，内部有很多状态）。</p>
+<p>tcp keeplive检测只是在传输层，应用层的死锁和堵塞它是无法识别的，所以需要应用层的心跳检测。</p>
+<p>每个reactor都有一个独立的epoll对象。</p>
+<h4 id="六-websocket">六、websocket</h4>
+<p>websocket和http都是建立在tcp连接（三次握手）之后，即是在send、revc中操作。</p>
+<h4 id="七-百万并发">七、百万并发</h4>
+<p>服务器单个端口监听情况下，客户端上限3w个连接，原因是客户端可用端口限制导致fd数量限制（port_range_from) 。</p>
+<p>服务器多个端口监听情况下，客户端上限6w5个连接，原因是被协议栈出去的防火墙netfilter阻拦（/etc/sysctl.conf, nf_conntrack_max)</p>
+<p><strong>再会！！！</strong></p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://zj11224.github.io/post/2022.07.16.传输协议/">传输协议</a></div></div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.07.09.设计模式/">设计模式</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://zj11224.github.io/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p><a>Powered by Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>

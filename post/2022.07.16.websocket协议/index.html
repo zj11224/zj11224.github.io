@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>websocket协议 | ZJ Blog</title>
+        <link rel="stylesheet" href="https://zj11224.github.io/styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://zj11224.github.io">ZJ Blog</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">温故而知新</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">websocket协议</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-07-16 00:00:00">2022-07-16 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
+<p>尝试用刚学的 epoll 封装一个协议，http 协议太复杂，试一下 websocket。</p>
+<p>websocket 实现了浏览器和服务器的全双工通信。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-应用场景">一、应用场景</h4>
+<p>服务器需要主动发送数据给浏览器的情况下，可以选择 websocket 协议。</p>
+<p>但是请注意，该场景下，websocket 并不是唯一选择。</p>
+<ul>
+<li>网页聊天，即时通讯</li>
+<li>弹幕信息</li>
+<li>实时推送</li>
+</ul>
+<h4 id="二-握手阶段">二、握手阶段</h4>
+<p>握手阶段是建立在 tcp 已经连接成功的基础上的。</p>
+<p>由客户端发送给服务器的握手数据。</p>
+<p>其中包含一个用 <strong>base64</strong> 编码的<strong>16</strong>字节的<strong>随机值</strong> key。</p>
+<p>服务端收到数据后，返还给客户端，验证数据是否合法。</p>
+<p>服务端需要将传过来的 <strong>key</strong> 和 一个固定的 <strong>GUID</strong> 拼接，然后经过 <strong>SHA-1</strong> 加密，再通过 <strong>base64</strong> 编码后返还回去给客户端验证。</p>
+<h4 id="三-通信阶段">三、通信阶段</h4>
+<p>做自定义协议，几个关键字段：</p>
+<ul>
+<li>操作码（fin、handshake）</li>
+<li>包长度</li>
+<li>mask - key</li>
+<li>payload data --&gt; json/xml</li>
+</ul>
+<p>注意 payload len 字段！！！</p>
+<ul>
+<li>小于等于125，该字段就是有效数据长度</li>
+<li>等于 126，后两字节表示有效数据长度</li>
+<li>等于 127，后8字节表示有效数据长度</li>
+</ul>
+<p>这里有博客说，有效数据长度是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>7</mn></msup></mrow><annotation encoding="application/x-tex">2^{7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mn>7</mn><mo>+</mo><mn>16</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{7+16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mn>7</mn><mo>+</mo><mn>64</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{7+64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span><span class="mbin mtight">+</span><span class="mord mtight">6</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span>。</p>
+<p>但是实际上有效数据长度应该是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>7</mn></msup></mrow><annotation encoding="application/x-tex">2^{7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span>。</p>
+<p>注意：payload len 是和数据长度相关的字段，但它并不就是数据长度！！！</p>
+<p>比如 payload len = 127 表示后8位是表示数据长度，127 仍然有其和长度相关的意义。</p>
+<p>websocket 协议数据帧上限 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span> ，可以说是长度无限制，理论上也不可能有这么大的数据，传输层也不允许这么大的包。</p>
+<h4 id="四-终止阶段">四、终止阶段</h4>
+<h4 id="五">五、</h4>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.07.16.传输协议/">传输协议</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://zj11224.github.io/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p><a>Powered by Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>

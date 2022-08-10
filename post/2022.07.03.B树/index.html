@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>MapReduce框架 | ZJ Blog</title>
+        <title>B树 | ZJ Blog</title>
         <link rel="stylesheet" href="https://zj11224.github.io/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,83 +56,83 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">MapReduce框架</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-05-20 00:00:00">2022-05-20 / 3 min read</div>
+                                    <div class="post-title  mdui-m-b-1">B树</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-07-03 00:00:00">2022-07-03 / 4 min read</div>
                                     <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
-<p>MIT6.824课程实验lab1--MapReduce框架</p>
-<p>后文的master等同于coordinator</p>
-<p>参考：<br>
-<a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html">官网lab1资料</a><br>
-<a href="https://zhuanlan.zhihu.com/p/122571315">MapReduce论文翻译</a><br>
-<a href="https://zhuanlan.zhihu.com/p/425093684">MapReduce实验代码、思路</a></p>
+<p>​	磁盘读取速度慢，本质上是因为磁盘寻址存在物理性操作（磁盘旋转，找到指定位置，然后读取）。这个读取次数是由树高决定的，所以我们需要降低树高，B树应运而生。B树每个节点内存储数据和磁盘块大小相关，这样能充分利用磁盘内部索引。</p>
+<p>​	B树比红黑树简单很多！！！</p>
+<p>​	红黑树和B/B+树本质上都是2-3-4树的变种，通过上升和下沉操作来保持平衡，只不过在B树中上升和下沉通过分裂和合并实现。</p>
+<p>​	B+树是B树变种，中间节点不存数据只存key，只有叶子节点存储数据，同时相邻叶子节点用链表链接，这样范围搜索，只需要找到头节点即可。</p>
 <h3 id="开始"><strong>开始</strong></h3>
-<h4 id="一-rpc通信">一、rpc通信</h4>
-<p>rpc包提供了通过网络或其他I/O连接对一个对象的导出方法的访问。服务端注册一个对象，使它作为一个服务被暴露，服务的名字是该对象的类型名。注册之后，对象的导出方法就可以被远程访问。</p>
-<p>因为进程之间需要通信，如work从master领取任务，work告诉master自己任务状态。<br>
-这个通信过程我们通过rpc完成。</p>
-<h5 id="1-服务端注册监听">1、服务端注册监听</h5>
-<pre><code class="language-go">func (c *Coordinator) server() {
-    // 注册
-    rpc.Register(c)
-    // http监听
-    rpc.HandleHTTP()
-    l, e := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
-    if e != nil {
-        log.Fatal(&quot;listen error:&quot;, e)
-    }
-    // 指定监听端口
-    go http.Serve(l, nil)
-}
-</code></pre>
-<pre><code class="language-go">// 可以被客户端调用的函数必须符合以下两个条件
-// 1、两个参数
-// 2、返还值error
-func (c *Coordinator) DistributeJob(args, reply *Job) error {}
-</code></pre>
-<h5 id="2-客户端呼叫服务端">2、客户端呼叫服务端</h5>
-<pre><code class="language-go">client, err := rpc.DialHTTP(&quot;tcp&quot;, serverAddress + &quot;:1234&quot;)
-if err != nil {
-	log.Fatal(&quot;dialing:&quot;, err)
-}
-</code></pre>
-<h5 id="3-客户端调用服务端方法">3、客户端调用服务端方法</h5>
-<pre><code class="language-go">var args, reply int
-// 参数类型要和服务端函数相同
-err = client.Call(&quot;Coordinator.DistributeJob&quot;, args, &amp;reply)
-if err != nil {
-	log.Fatal(&quot;Coordinator error:&quot;, err)
-}
-</code></pre>
-<h4 id="二-枚举">二、枚举</h4>
-<p>![enum](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\enum.jpg)</p>
-<h4 id="三-结构体">三、结构体</h4>
-<p>![struct](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\struct.jpg)</p>
-<h4 id="四-关键分配任务逻辑">四、关键分配任务逻辑</h4>
-<p>![](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\distribute.jpg)</p>
-<h4 id="五-细节">五、细节</h4>
+<h4 id="一-定义">一、定义</h4>
+<p>一颗M阶B树T，满足以下条件：</p>
 <ol>
-<li>先监听服务再执行channel，不然work无法获得任务（本质是channel堵塞无法往下执行）。</li>
-<li>channel默认一个缓存，当里面的数据没有被接收时会堵塞。<br>
-以为创建发送任务和接收任务并发执行，所以建议初始化channel缓存长度大于任务数。</li>
-<li>shell脚本循环执行命令，只有上一条命令完成时，才会执行下一条命令，不是并发执行。<br>
-想要并发执行，命令后面添加&amp;（后台同时执行）。</li>
-<li>rpc中Call，参数必须实例化！！！</li>
+<li>每个结点至多拥有M颗子树；</li>
+<li>根结点至少拥有两颗子树；</li>
+<li>除了根结点以外，其余每个分支结点至少拥有M/2颗子树；</li>
+<li>所有的叶结点都在同一层上；</li>
+<li>有k颗子树的分支结点则存在k-1个关键字，关键字按照递增顺序进行排序；</li>
+<li>关键字数量满足 ceil( M / 2) - 1 &lt;= n &lt;= M - 1。</li>
 </ol>
-<h4 id="五-完善">五、完善</h4>
-<p>目前只基本实现了功能，后面的crash.go的随机kill和延迟还没有解决。<br>
-而且是参照大佬的实验步骤，所以部分细节还是有一些迷糊。</p>
-<p>因为后面的raft大作业需要用到，先到lab2学习。</p>
-<hr>
-<p>所有的实验步骤到此结束，<strong>再会！！！</strong></p>
+<h4 id="二-数据结构选型">二、数据结构选型</h4>
+<p>首先，这是一个平衡树，整体上用多叉树实现。</p>
+<p>其次，M选取偶数，key就是奇数个，后面便于分裂。</p>
+<p>最后，每个节点内部的数据存储可以用数组或者链表实现。<br>
+如果使用链表实现，插入删除O(1)，同时插入删除也伴随查询，查询O(n)。<br>
+如果用数组实现，更改头节点O(n)，但是查询（二分查找）时间O(logn)。<br>
+B树一般适用于强查询的，所以这里选用数组来实现。</p>
+<h4 id="三-插入">三、插入</h4>
+<ol>
+<li>递归查找到对应位置；</li>
+<li>在递归过程中，对下个递归节点，预处理；</li>
+<li>下个递归节点如果满了，分裂；</li>
+<li>直到找到指定位置，插入。</li>
+</ol>
+<p>先说下，分裂就是当前节点满了，将其分裂成两个节点，并将中间的数据插入父节点，作为新的两个节点的索引。</p>
+<p>这里有两个概念很重要。</p>
+<ol>
+<li>每次找到的节点，他都是小于 2 * degree - 1，即不满状态。</li>
+<li>只插入叶子节点。</li>
+</ol>
+<p>如何保持不满状态呢？</p>
+<p>很简单，预处理 + 分裂。</p>
+<p>比如当前位置符合，要往左节点递归，若此时左节点满了，那么就先将左节点分裂，此时父节点会多一个数据，然后才继续递归。</p>
+<p>注意根节点满了的特殊情况，要new一个新的根节点，并将第一个索引指向原根节点，然后分裂，递归。</p>
+<p>只有创建的第一个节点是叶子节点属性，分裂继承节点属性(这里也会出现新的叶子节点)，但是其他创建的都是普通的节点。</p>
+<h4 id="四-删除">四、删除</h4>
+<ol>
+<li>递归查找到对应位置</li>
+<li>在递归过程中，对下个递归节点，预处理</li>
+<li>下个递归节点如果恰好为最小数量，尝试借取（有多种情况）</li>
+<li>直到找到指定位置，删除</li>
+</ol>
+<p>这里的逻辑类似插入，就是确保递归进入的节点数据量大于最小值 degree - 1，通过预处理+借取操作实现。</p>
+<p>但是这里的借取操作有4种情况：</p>
+<ol>
+<li>右兄弟节点富裕，自己从父节点借一个，父节点从右兄弟节点借一个；</li>
+<li>左兄弟节点富裕，自己从父节点借一个，父节点从左兄弟节点借一个；</li>
+<li>左兄弟节点存在，将左兄弟节点、父节点、自己合并；</li>
+<li>右兄弟节点存在，将自己、父节点、右兄弟节点合并。</li>
+</ol>
+<p>删除同样有4种情况：</p>
+<ol>
+<li>叶子节点数据直接删（注意进入该节点就说明该节点数量大于 degree - 1）;</li>
+<li>左孩子富裕，借一个，代替被删除数据（保持删除数据索引有效）；</li>
+<li>右孩子富裕，借一个，代替被删除数据（保持删除数据索引有效）；</li>
+<li>都不富裕，左孩子、自己、右孩子合并。</li>
+</ol>
+<h4 id="五-查找">五、查找</h4>
+<p>因为用数组实现，所以节点内搜索直接用二分查找即可。</p>
+<p><strong>再会！！！</strong></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://zj11224.github.io/post/2022.07.03.B树/">B树</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://zj11224.github.io/post/2022.07.07.红黑树/">红黑树</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.05.05.Ubuntu vsftpd远程配置/">Ubuntu vsftpd远程配置</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.05.20.MapReduce框架/">MapReduce框架</a></div> </div>
                                        
                                       </div>
                                    

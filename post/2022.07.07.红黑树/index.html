@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>MapReduce框架 | ZJ Blog</title>
+        <title>红黑树 | ZJ Blog</title>
         <link rel="stylesheet" href="https://zj11224.github.io/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,83 +56,59 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">MapReduce框架</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-05-20 00:00:00">2022-05-20 / 3 min read</div>
+                                    <div class="post-title  mdui-m-b-1">红黑树</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-07-07 00:00:00">2022-07-07 / 3 min read</div>
                                     <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="前言"><strong>前言</strong></h3>
-<p>MIT6.824课程实验lab1--MapReduce框架</p>
-<p>后文的master等同于coordinator</p>
-<p>参考：<br>
-<a href="https://pdos.csail.mit.edu/6.824/labs/lab-mr.html">官网lab1资料</a><br>
-<a href="https://zhuanlan.zhihu.com/p/122571315">MapReduce论文翻译</a><br>
-<a href="https://zhuanlan.zhihu.com/p/425093684">MapReduce实验代码、思路</a></p>
+<p>​	红黑树真的好难啊，不想学了！！！</p>
+<p>​	基本照着网上博客抄了一遍，基本上原理懂了。</p>
+<p>​	红黑树和B/B+树本质上都是2-3-4树的变种，通过上升和下沉操作来保持平衡，只不过在红黑树中上升和下沉都是通过左旋和右旋实现。</p>
+<p>​	set和map都是红黑树实现，但是 set 只存 key，map 存 &lt;key, value&gt;，同时会使用覆盖（相同 key， value选择后面的）。</p>
 <h3 id="开始"><strong>开始</strong></h3>
-<h4 id="一-rpc通信">一、rpc通信</h4>
-<p>rpc包提供了通过网络或其他I/O连接对一个对象的导出方法的访问。服务端注册一个对象，使它作为一个服务被暴露，服务的名字是该对象的类型名。注册之后，对象的导出方法就可以被远程访问。</p>
-<p>因为进程之间需要通信，如work从master领取任务，work告诉master自己任务状态。<br>
-这个通信过程我们通过rpc完成。</p>
-<h5 id="1-服务端注册监听">1、服务端注册监听</h5>
-<pre><code class="language-go">func (c *Coordinator) server() {
-    // 注册
-    rpc.Register(c)
-    // http监听
-    rpc.HandleHTTP()
-    l, e := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
-    if e != nil {
-        log.Fatal(&quot;listen error:&quot;, e)
-    }
-    // 指定监听端口
-    go http.Serve(l, nil)
-}
-</code></pre>
-<pre><code class="language-go">// 可以被客户端调用的函数必须符合以下两个条件
-// 1、两个参数
-// 2、返还值error
-func (c *Coordinator) DistributeJob(args, reply *Job) error {}
-</code></pre>
-<h5 id="2-客户端呼叫服务端">2、客户端呼叫服务端</h5>
-<pre><code class="language-go">client, err := rpc.DialHTTP(&quot;tcp&quot;, serverAddress + &quot;:1234&quot;)
-if err != nil {
-	log.Fatal(&quot;dialing:&quot;, err)
-}
-</code></pre>
-<h5 id="3-客户端调用服务端方法">3、客户端调用服务端方法</h5>
-<pre><code class="language-go">var args, reply int
-// 参数类型要和服务端函数相同
-err = client.Call(&quot;Coordinator.DistributeJob&quot;, args, &amp;reply)
-if err != nil {
-	log.Fatal(&quot;Coordinator error:&quot;, err)
-}
-</code></pre>
-<h4 id="二-枚举">二、枚举</h4>
-<p>![enum](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\enum.jpg)</p>
-<h4 id="三-结构体">三、结构体</h4>
-<p>![struct](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\struct.jpg)</p>
-<h4 id="四-关键分配任务逻辑">四、关键分配任务逻辑</h4>
-<p>![](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\distribute.jpg)</p>
-<h4 id="五-细节">五、细节</h4>
+<h4 id="一-定义">一、定义</h4>
 <ol>
-<li>先监听服务再执行channel，不然work无法获得任务（本质是channel堵塞无法往下执行）。</li>
-<li>channel默认一个缓存，当里面的数据没有被接收时会堵塞。<br>
-以为创建发送任务和接收任务并发执行，所以建议初始化channel缓存长度大于任务数。</li>
-<li>shell脚本循环执行命令，只有上一条命令完成时，才会执行下一条命令，不是并发执行。<br>
-想要并发执行，命令后面添加&amp;（后台同时执行）。</li>
-<li>rpc中Call，参数必须实例化！！！</li>
+<li>每个结点是红的或者黑的；</li>
+<li>根结点是黑的；</li>
+<li>每个叶子结点是黑的；</li>
+<li>如果一个结点是红的，则它的两个儿子都是黑的；</li>
+<li>对每个结点，从该结点到其子孙结点的所有路径上的 包含相同数目的黑结点。</li>
 </ol>
-<h4 id="五-完善">五、完善</h4>
-<p>目前只基本实现了功能，后面的crash.go的随机kill和延迟还没有解决。<br>
-而且是参照大佬的实验步骤，所以部分细节还是有一些迷糊。</p>
-<p>因为后面的raft大作业需要用到，先到lab2学习。</p>
-<hr>
-<p>所有的实验步骤到此结束，<strong>再会！！！</strong></p>
+<p>红黑树是一颗非严格平衡二叉树</p>
+<p>如黑色高度为h，那么该红黑树每条链的长度在 h 到 2 * h - 1 之间。</p>
+<h4 id="二-插入">二、插入</h4>
+<p>找到插入位置，并将其设置为<strong>红色</strong>。</p>
+<p>接下来若<strong>父节点红色</strong>，才需要平衡操作，否则不需要。</p>
+<p>在<strong>父节点红色</strong>的情况下，大体有三种情况需要平衡：</p>
+<ol>
+<li>父节点的兄弟节点也是红色，将叔父节点和父节点改为黑色，祖父节点改为红色，再对祖父节点平衡</li>
+<li>叔父节点为黑色，且父节点和自身都是偏向同一边（左倾或者右倾），交换父节点和祖父节点颜色，对父节点右旋或者左旋，本质是<strong>将节点移动要另一子树</strong>。</li>
+<li>叔父节点为黑色，但是父节点和自身偏向不同，左旋或者右旋，得到情况2。</li>
+</ol>
+<h4 id="三-删除">三、删除</h4>
+<p>找到删除节点，同时需要找到一个<strong>替代节点</strong>（删除该节点，同时将该节点数值转移到删除节点，但是颜色不变）。</p>
+<ol>
+<li>当删除节点不是双子树的情况下，删除该节点（<strong>替代节点即自身</strong>）；</li>
+<li>将右子树最小值作为替代节点。</li>
+</ol>
+<p>若<strong>替代节点黑色</strong>，说明失衡，需要调整。</p>
+<p>大体有四种情况，当前节点为<strong>替代节点右子节点</strong>。</p>
+<ol>
+<li><strong>当前节点红色</strong>，改为黑色；</li>
+<li><strong>兄弟节点红色</strong>，左旋或者右旋，将兄弟节点<strong>上升</strong>，使得兄弟节点变为原先兄弟节点的子节点（<strong>必为黑色</strong>），然后转变为3、4其中之一。</li>
+<li><strong>兄弟节点黑色</strong>，兄弟节点<strong>子节点都是黑色</strong>，无法通过兄弟子树移动红色节点到自己子树，只能将兄弟节点改为红色，继续递归，直到父节点出现红色，将其变黑。</li>
+<li><strong>兄弟节点黑色</strong>，兄弟子节点<strong>其中一个子节点红色</strong>，尝试通过旋转将其<strong>移动</strong>到自己子树，将其变黑，根据子节点情况不同，会旋转一次或者两次。</li>
+</ol>
+<h4 id="四-查找">四、查找</h4>
+<p>二分查找即可。</p>
+<p><strong>再会！！！</strong></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://zj11224.github.io/post/2022.07.03.B树/">B树</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://zj11224.github.io/post/2022.07.08.布隆过滤器/">布隆过滤器</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.05.05.Ubuntu vsftpd远程配置/">Ubuntu vsftpd远程配置</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://zj11224.github.io/post/2022.07.03.B树/">B树</a></div> </div>
                                        
                                       </div>
                                    

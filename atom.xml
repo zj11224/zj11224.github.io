@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://zj11224.github.io</id>
     <title>ZJ Blog</title>
-    <updated>2022-06-08T16:36:03.194Z</updated>
+    <updated>2022-08-10T14:35:37.382Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://zj11224.github.io"/>
     <link rel="self" href="https://zj11224.github.io/atom.xml"/>
@@ -11,124 +11,964 @@
     <icon>https://zj11224.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, ZJ Blog</rights>
     <entry>
-        <title type="html"><![CDATA[网络规划笔记（暂时）]]></title>
-        <id>https://zj11224.github.io/post/wang-luo-gui-hua-bi-ji-zan-shi/</id>
-        <link href="https://zj11224.github.io/post/wang-luo-gui-hua-bi-ji-zan-shi/">
+        <title type="html"><![CDATA[websocket协议]]></title>
+        <id>https://zj11224.github.io/post/2022.07.16.websocket协议/</id>
+        <link href="https://zj11224.github.io/post/2022.07.16.websocket协议/">
         </link>
-        <updated>2022-06-08T16:27:16.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="网络信息系统体系架构与网络生命周期简答题-名词解释范围">网络信息系统体系架构与网络生命周期（简答题、名词解释范围）</h3>
-<h4 id="网络信息系统体系架构">网络信息系统体系架构</h4>
-<p>第一层：<strong>基础设施</strong>（即<strong>综合布线</strong>）是<strong>架构</strong>的<strong>物理基础</strong></p>
-<p>第二层：<strong>计算机网络通信协议</strong>及<strong>服务</strong>，是<strong>软件标准基础</strong></p>
-<p>第三层：<strong>基础网络服务</strong>·：数据库、web、FTP等</p>
-<p>第四层：OA系统、VOIP，视频会议等</p>
-<p>网络<strong>管理</strong>平台和网络<strong>安全</strong>平台是<strong>贯穿</strong>四层的<strong>支撑平台</strong></p>
-<h4 id="网络生命周期思科公司提出了规划-设计-实现-运行-优化pdioo网络生命周期">网络生命周期（思科公司提出了规划-设计-实现-运行-优化（PDIOO）网络生命周期）</h4>
-<p><strong>规划</strong>（Planning）:确定详细的网络需求，并检查 现有网络。</p>
-<p><strong>设计</strong>（Design）：根据初始的需求和对现有网络 分析中所收集到的额外信息设计网络，并与用户 一起改进设计方案。</p>
-<p><strong>实现</strong>（Implementation）:根据得到认可的设计方 案构建网络。</p>
-<p><strong>运行</strong>（Operation）：网络开始运转，并且受到监测，这个阶段是设计方案的最终测试。</p>
-<p><strong>优化</strong>（Optimization）：在这个阶段会发现和纠正一些问题，或者在问题出现之前， 或者在发生故障之后。如果存在的问题太多，可能需要重新设计。</p>
-<p><strong>退役</strong>（Retire）：虽然没包含在PDIOO中，但网络淘汰是不可避免的.当升级的代 价等于甚至大于重新建设的成本时，则必须考虑网络退役。</p>
-<h3 id="技术指标名词解释的范围">技术指标（名词解释的范围）</h3>
-<p><strong>网络带宽</strong>（bandwidth）是指<strong>给定时间</strong>内通过<strong>某个网络</strong>的<strong>信息量</strong>，它与网络的<strong>传输容量</strong>和<strong>传输能力</strong>是息息相关的。</p>
-<p><strong>吞吐量</strong>(throughput)是指一组<strong>特定的数据</strong>在<strong>特定的时间段</strong>，经过<strong>特定的路径</strong>所传输的<strong>信息量</strong>的<strong>实际测量值</strong>。</p>
-<p><strong>差错率</strong>：在数据链路层和网络层都存在差错控制。差错控制其实与网络传输的服务质量相关，不同的用户对服务质量的要求是不同的， 选择的网络设备也不同，这样就关系到性价比。网络系统的主要设备是交换机和路由器， 均为分组方式实现交换和转发，分组数据传输服务质量与用户业务和网络服务有关。</p>
-<p><strong>网络时延</strong>是指从<strong>发送方发送</strong>报文的<strong>第一个比特</strong>开始，到网络另外一端<strong>接收方接收</strong>到 这个报文的<strong>最后一个比特</strong>为止所花费的时间。时延由4个部分组成：<strong>处理时延</strong>、<strong>排队时延</strong>、<strong>传播时延</strong>和<strong>传输时延</strong>。</p>
-<p><strong>网络路由</strong>在<strong>Internet</strong>和<strong>企业内部网</strong>、<strong>局域网</strong>之间互连主要都是通过<strong>IP路由器</strong>实现的。路由器的主要功能就是负责接收各个网络入口的分组，并把分组从相应的出口转发出去。路由器使用各种路由协议，提供网络路径选择，并对流量和访问进行控制。</p>
-<h3 id="层次化模型">层次化模型</h3>
-<p>•<strong>接入层</strong>：为<strong>用户</strong>提供<strong>接入网络</strong>的<strong>服务</strong>，也称为访问层。</p>
-<p>•<strong>分布层</strong>：提供<strong>用户</strong>到<strong>核心层</strong>之间的<strong>连接</strong>，也称为汇聚层。</p>
-<p>•<strong>核心层</strong>：<strong>高速</strong>的<strong>网络骨干</strong>。</p>
-<h4 id="层次化模型的优缺点">层次化模型的优缺点</h4>
-<p><strong>优点：</strong></p>
-<p>1、三层结构<strong>减轻</strong>了内层网络主设备的<strong>负载</strong>。</p>
-<p>2、降低了<strong>网络成本</strong>，便于<strong>网络管理</strong>，降低网络运行<strong>维护花费</strong>。</p>
-<p>3、简化了设计元素，易于<strong>理解</strong>。</p>
-<p>4、容易变更<strong>层次结构</strong>。局部升级不会影响其他部分，<strong>扩展方便</strong>。</p>
-<p><strong>缺点：</strong></p>
-<p>容易引入设计错误，有可能将两个分支连接起来这种错误会造成网络回环，对编制网络文档和排错带来巨大麻烦。</p>
-<h3 id="广播风暴生成树协议-广播域等名词解释与简答题范围">广播风暴，生成树协议、广播域等（名词解释与简答题范围）</h3>
-<p><strong>生成树协议</strong>(Spanning Tree Protocol, STP)：首先选择一个交换机作为<strong>根网桥</strong>, 计算出其他所有交换机到根网桥的<strong>最佳路径</strong>，而把备用路径状态设为<strong>堵塞状态</strong>，当最佳路径<strong>发生故障</strong>时再<strong>启用</strong>备用路径，这样就可以<strong>避免广播风暴</strong>。</p>
-<p><strong>广播风暴</strong>是指由于<strong>网络拓扑</strong>的<strong>设计和连接</strong>问题或其他原因使<strong>广播帧</strong>在局域网内<strong>循环传播</strong>，导致<strong>网络性能下降</strong>甚至<strong>网络瘫痪</strong>的情况。</p>
-<p><strong>广播域</strong>（Broadcast Domain）实质就是由两层交换机所连接的一组<strong>冲突域</strong>。一个大型的两层交换式以太网仍然是一个<strong>广播域</strong>。</p>
-<h3 id="atm-isdn-xdsl名词解释题">ATM、ISDN、XDSL（名词解释题）</h3>
-<p><strong>ISDN</strong>：综合业务数字网（Integrated Service Digital Network. ISDN）利用<strong>公用电话网</strong>向<strong>用户</strong>提供<strong>端对端数字信道连接服务</strong>。</p>
-<p><strong>XDSL</strong>：数字用户环路 XDSL （Digital Subscriber Loop）是 HDSL、ADSL 和 VDSL 等技术的统称。</p>
-<p>ATM：异步传输模式 ATM（ Asynchronous Transfer Mode）是在<strong>分组交换技术</strong>的基础上发展起来的<strong>快速分组交换技术</strong>。</p>
-<h3 id="wlan通信原理以及wlan设计注意事项简答题范围">WLAN通信原理以及WLAN设计注意事项（简答题范围）</h3>
-<h4 id="wlan中传输的帧分成以下几类">WLAN中传输的帧分成以下几类：</h4>
-<p><strong>数据帧</strong>：<strong>网络业务数据</strong>。</p>
-<p><strong>控制帧</strong>：使用<strong>请求发送</strong>、清除<strong>发送和确认信号控制</strong>对介质的访问。</p>
-<p><strong>管理帧</strong>：类似于数据帧，与当前<strong>无线传输的控制</strong>有关。</p>
-<p>其中只有数据帧与以太网的802.3帧相似，但以太网帧的大小不能超过1518B,而无线网帧的大小可以达到2346B。</p>
-<p><strong>无线站点</strong>可以通过两种方法选择AP进行数据帧转发：第一种方法是让无线站点主动发送<strong>探测帧</strong>扫描网络以寻找AP，这种方法称为<strong>主动扫描</strong>；第二种方法是让AP定期发送一 个宣告自己能力的<strong>信标帧</strong>，这种方法称为<strong>被动扫描</strong>。</p>
-<p><strong>主动扫描</strong>的工作过程如下：</p>
-<p>(1)  无线站点发送探测帧。</p>
-<p>(2)  所有接收到该探测帧的AP用探测响应帧来应答。</p>
-<p>(3)   无线站点从中选择一个AP,并向该AP发送•个关联请求帧。</p>
-<p>(4)   选中的AP用关联响应帧来应答。</p>
-<p>在<strong>被动扫描</strong>中，无线站点在接收到AP定期发出的信标帧后，只需要向该AP发回一 个关联请求帧就可以完成站点与AP的关联。</p>
-<h4 id="设计wlan需要考虑如下事项">设计WLAN需要考虑如下事项</h4>
-<p>1、站点测量</p>
-<p>2、WLAN漫游</p>
-<p>3、 点到点网桥</p>
-<h3 id="恶意软件名词解释与选择判断题范围">恶意软件（名词解释与选择判断题范围）</h3>
-<p><strong>病毒</strong>是附着于程序或文件中的<strong>一段计算机代码</strong>，可在计算机之间传播。它一边传播一边感染计算机。病毒可<strong>损坏</strong>软件、硬件和文件。</p>
-<p>与病毒相似，<strong>蠕虫</strong>也是从一台计算机复制到另一台计算机，<strong>但这种复制是它自动进行</strong>。首先，它控制计算机具备传输文件或信息的功能，潜入你的系统并允许其他人远程控制你的计算机。最危险的是**，蠕虫可大量复制。**</p>
-<p><strong>木马</strong>是指表面上<strong>有用的软件</strong>，实际上却是危害计算机<strong>安全</strong>并导致严重破坏的计算机程序。</p>
-<p><strong>恶意软件</strong>实际上是指以网络为平台，对信息安全产生威胁的所有程序的总和。</p>
-<h3 id="拒绝服务攻击名词解释与简答题范围">拒绝服务攻击（名词解释与简答题范围）</h3>
-<p><strong>拒绝服务攻击</strong>（Denial of Service, DoS）是指通过合法的手段使服务器不能正常提供服务的攻击方法。最基本的DoS攻击就是利用合理的服务请求占用过多的服务器资源， 从而使合法用户无法得到服务器的响应。</p>
-<p>SYN泛洪：黑客向服务器发送无数个TCP的同步请求，而服务器则回复每一个请求，并且分配部分计算资源，以便在连接成为“全连接”时提供服务。处于“半连接”的服务器一般会重传恢复，并	等待一段时间后放弃这个半开连接。被半开连接淹没的服务器会很快耗尽资源.以至于不能再为即将到来的连接请求分配资源，因此这种攻击就称为拒绝服务攻击。</p>
-<h3 id="威胁防御-流量过滤-防火墙-ids-ips-蜜罐名词解释范围">威胁防御、流量过滤、防火墙、IDS、IPS、蜜罐（名词解释范围）</h3>
-<p><strong>威胁防御</strong>：指的是预防那些已知的和未知的攻击而采用的必要行为。</p>
-<p><strong>病毒防护</strong>：病毒防护要从<strong>防毒</strong>、<strong>查毒</strong>和<strong>解毒</strong>3方面进行，信息系统对病毒的防御能力和效果也要从防毒能力、査毒能力和解毒能力这3个方面来评估。</p>
-<p><strong>流量过滤</strong>：在<strong>数据链路层</strong>上可以使用 <strong>MAC地址</strong>实现流量过滤，<strong>在网络层</strong>上利用<strong>IP地址</strong>进行过滤，在<strong>传输层上</strong>利用<strong>端口号</strong>进行过滤。比较常用的是在网络层进行<strong>报文过滤</strong>，可以进一步分为<strong>静态报文过滤</strong>和<strong>动态报文过滤</strong>。</p>
-<p><strong>防火墙</strong>：防火墙(Firewall)实际上是一种<strong>访问控制技术</strong>，在某个机构的网络和不安全网络之间设置<strong>障碍</strong>，阻止对信息资源的<strong>非法访问</strong>，也可以使用防火墙<strong>阻止</strong>保密信息从受保护网络上被非法输出。现有的防火墙主要有<strong>包过滤</strong>型、<strong>应用网关</strong>型、<strong>代理服务</strong>型和<strong>复合型</strong>防火墙。</p>
-<p><strong>入侵检测IDS</strong>是对入侵行为的发觉。它通过对计算机网络或计算机系统中的若干关键点收集信息并对其进行分析，从中发现网络或系统中是否有<strong>违反安全策略</strong>的行为和被攻击的迹象。进行入侵检测的软件与硬件的组合便是IDS。</p>
-<p><strong>IPS</strong> 是在入侵检测的基础上对违反安全策略的行为和攻击进行<strong>过滤</strong>、<strong>拒绝</strong>和<strong>丢弃报文处理</strong>的软件和硬件系统。</p>
-<h3 id="虚拟专用网-vpn安装机制-vpn与专线区别-ipsecvpn与sslvpn区别-文件加密与数字签名简答题范围">虚拟专用网、VPN安装机制、VPN与专线区别、IPsecVPN与SSLvpn区别、文件加密与数字签名（简答题范围）</h3>
-<p><strong>虚拟专用网</strong>（Virtual Private Network. VPN）是一种利用公共网络来构建私人专用网络的技术，用于构建VPN的公共网络包括Internet,帧中继和ATM等。</p>
-<p><strong>VPN安装机制</strong>：VPN系统一般都会采用加密技术，通过VPN隧道传输的数据都会被加密。隧道可以由VPN设备建立或者使用VPN软件的远程用户建立。</p>
-<p>与传统的专线网络相比,VPN虚拟专网具备以下优势：</p>
-<p>1、廉价的网络接入。</p>
-<p>2、严格的用户认证。</p>
-<p>3、高强度的数据保密。</p>
-<p>IPSec VPN与SSL VPN相比，分别具有各自的优缺点。</p>
-<p>(1)  IPSec VPN多用于&quot;网-网”连接,SSL VPN用于“移动客户-网”连接。SSL VPN 的移动用户使用标准的浏览器，无须安装客户端程序；而IPSec VPN的移动用户需要安装专门的IPSec客户端软件。</p>
-<p>(2)  SSL VPN是基于应用层的VPN,而IPSec VPN是基于网络层的VPN。</p>
-<p>(3)  SSL VPN隧道可以穿透防火墙；而IPSec客户端需要支持“NAT穿透”功能才能穿透防火墙。</p>
-<p>(4)  SSL VPN更容易提供细粒度访问控制，可以对用户的权限、资源、服务和文件进行更加细致的控制。而IPSec VPN主要基于IP五元组对用户进行访问控制。</p>
-<p>文件加密往往分成两种情况：<br>
-一种是对信息本身要求安全保密，使用加密算法将文件完整加密；<br>
-另一种情况则仅仅为验证信息的完整性、真实性和不可否认性，仅仅需要找到等同于亲笔签名效用的电子签名即可，这就是数字签名 (Digital Signature) 。</p>
-<p>数字签名的概念和纸质文件签名类似，当发送电子文件时，可以对整个文件签名，也可以对文件的摘要(也称为报文摘要.Message Digest)进行签名。</p>
-<p>在数字签名中，公钥和私钥的作用是不同的，私钥用来签名。而公钥用来验证签名。</p>
-<h3 id="intserv模型与diffserv模型简答题范围">IntServ模型与DiffServ模型（简答题范围）</h3>
-<p>IntServ服务模型在发送报文前，需要向网络申请特定的服务。这个请求是通过信令（Signal）来完成的，应用程序首先通知网络它自己的流量参数和需要的特定服务质量请求，包括带宽和时延等，应用程序一般在收到网络的确认信息后发送报文。</p>
-<p>DiffServ即区别服务模型，与IntServ不同，它不需要信令，即应用程序在发出报文前，不需要通知路由器。网络不需要为每个流维护状态，它根据每个报文指定的QoS来提供特定的服务。</p>
-<h3 id="分类与标记-拥塞避免-拥塞管理-链路专用工具名词解释范围">分类与标记、拥塞避免、拥塞管理、链路专用工具（名词解释范围）</h3>
-<p><strong>分类</strong>是分析报文并按不同类别进行排序的一个过程。<strong>标记</strong>是把报文类别标记放入报文的过程。</p>
-<p><strong>拥塞避免技术</strong>可以监测网络流量负载,以便在出现问题之前能够<strong>预测</strong>并避免拥塞，在队列<strong>充满</strong>时丢弃优先级较低的报文。</p>
-<p><strong>拥塞管理</strong>可以看作是两个过程：排队和调度，排队是把<strong>业务</strong>分散到不同的<strong>队列</strong>和<strong>缓冲</strong>中，而<strong>调度</strong>是确定下一次该<strong>发送</strong>哪个队列和业务。</p>
-<p><strong>链路专用工具</strong>：在点到点WAN连接的两端使用链路专用工具可以减少<strong>带宽需求</strong>或<strong>传播时延</strong>。</p>
-<h3 id="dns解析过程-dns的分类-ftp工作原理-dhcp服务器特性简答题范围">DNS解析过程、DNS的分类、FTP工作原理、DHCP服务器特性（简答题范围）</h3>
-<h4 id="dns解析过程">DNS解析过程</h4>
-<p>当程序与远程计算机<strong>通信</strong>时， 应用程序通过<strong>DNS客户端软件</strong>向DNS服务器发出一个请求，请求远程计算机的IP地址。DNS服务器用远程主机名作为关键字，在DNS服务器的<strong>高速缓存</strong>中査找。若缓存中没有，则在<strong>数据库</strong>查找。若找到远程计算机主机名，则将远程计算机的IP地址返回给发出请求的本地计算机。若仍然找不到，优先查找<strong>本地DNS服务器</strong>，然后是<strong>根域</strong>到<strong>顶级域</strong>再到<strong>二级域</strong>，直至找到目的计算机的IP。</p>
-<h4 id="dns的分类">DNS的分类</h4>
-<p>主DNS服务器完成分区内主机名及其相关信息的管理、更新和维护。</p>
-<p>辅DNS服务器对分区内主DNS服务器的数据库信息进行备份。</p>
-<p>缓存服务器是利用服务器缓存来存储从上级域或其他的DNS域收到的信息，一直到 信息过期或作废为止。</p>
-<h4 id="ftp-工作原理">FTP 工作原理</h4>
-<p>FTP应用需要建立两条TCP连接，一条为控制连接，另一条为数据连接。根据数据连接由服务器端发起还是客户端发起,FTP服务器的工作模式可以分成两类：端口模式 和被动模式。端口模式（Port FTP）也称主动模式，由服务器发起数据传输请求，21为控制端口，20为数据端口。被动模式（Pasv FTP）,由客户端发起数据传输请求，并确定传输数据所使用的端口。</p>
-<h4 id="dhcp服务器特性">DHCP服务器特性</h4>
-<p>(1)  自动管理IP地址，防止重复的IP地址。</p>
-<p>(2)  支持BOOTP客户，这样客户可以很容易地从BOOTP网络转移到DHCP网络。</p>
-<p>(3)  管理员可以设置地址的租用时间。</p>
-<p>(4)  可以限制哪些MAC地址能够享受动态IP地址服务.也可固定将一个MAC地 址和IP地址绑定。</p>
-<p>(5)  可以定义一个被动态分配的IP地址池。地址池可以使用非连续的IP地址。</p>
-<p>(6)  支持在不同IP网络(或子网)上的两个以上IP地址池的联合。</p>
+        <updated>2022-07-15T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>尝试用刚学的 epoll 封装一个协议，http 协议太复杂，试一下 websocket。</p>
+<p>websocket 实现了浏览器和服务器的全双工通信。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-应用场景">一、应用场景</h4>
+<p>服务器需要主动发送数据给浏览器的情况下，可以选择 websocket 协议。</p>
+<p>但是请注意，该场景下，websocket 并不是唯一选择。</p>
+<ul>
+<li>网页聊天，即时通讯</li>
+<li>弹幕信息</li>
+<li>实时推送</li>
+</ul>
+<h4 id="二-握手阶段">二、握手阶段</h4>
+<p>握手阶段是建立在 tcp 已经连接成功的基础上的。</p>
+<p>由客户端发送给服务器的握手数据。</p>
+<p>其中包含一个用 <strong>base64</strong> 编码的<strong>16</strong>字节的<strong>随机值</strong> key。</p>
+<p>服务端收到数据后，返还给客户端，验证数据是否合法。</p>
+<p>服务端需要将传过来的 <strong>key</strong> 和 一个固定的 <strong>GUID</strong> 拼接，然后经过 <strong>SHA-1</strong> 加密，再通过 <strong>base64</strong> 编码后返还回去给客户端验证。</p>
+<h4 id="三-通信阶段">三、通信阶段</h4>
+<p>做自定义协议，几个关键字段：</p>
+<ul>
+<li>操作码（fin、handshake）</li>
+<li>包长度</li>
+<li>mask - key</li>
+<li>payload data --&gt; json/xml</li>
+</ul>
+<p>注意 payload len 字段！！！</p>
+<ul>
+<li>小于等于125，该字段就是有效数据长度</li>
+<li>等于 126，后两字节表示有效数据长度</li>
+<li>等于 127，后8字节表示有效数据长度</li>
+</ul>
+<p>这里有博客说，有效数据长度是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>7</mn></msup></mrow><annotation encoding="application/x-tex">2^{7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mn>7</mn><mo>+</mo><mn>16</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{7+16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mrow><mn>7</mn><mo>+</mo><mn>64</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{7+64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span><span class="mbin mtight">+</span><span class="mord mtight">6</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span>。</p>
+<p>但是实际上有效数据长度应该是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>7</mn></msup></mrow><annotation encoding="application/x-tex">2^{7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">7</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span>。</p>
+<p>注意：payload len 是和数据长度相关的字段，但它并不就是数据长度！！！</p>
+<p>比如 payload len = 127 表示后8位是表示数据长度，127 仍然有其和长度相关的意义。</p>
+<p>websocket 协议数据帧上限 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span></span> ，可以说是长度无限制，理论上也不可能有这么大的数据，传输层也不允许这么大的包。</p>
+<h4 id="四-终止阶段">四、终止阶段</h4>
+<h4 id="五">五、</h4>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[传输协议]]></title>
+        <id>https://zj11224.github.io/post/2022.07.16.传输协议/</id>
+        <link href="https://zj11224.github.io/post/2022.07.16.传输协议/">
+        </link>
+        <updated>2022-07-15T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>主要了解 tcp 和 udp。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-udp">一、udp</h4>
+<p>MTU：最大传输单位（网络层限制）。</p>
+<p>MSS：最大报文长度（tcp传输层限制）。</p>
+<ul>
+<li>
+<p>udp实际数据长度</p>
+<p>udp首部（8字节）+ ip首部（20字节）+ udp实际数据长度 &lt;= MTU（1500字节）</p>
+<p>即实际数据长度最大 1472 字节。</p>
+<p>但是实际上还存在 pppoe （运营商信息），所以我们一般udp实际数据长度最大 1400 字节。</p>
+<p>当然，udp 首部有16位存储长度，理论上最大长度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>，而且到 IP 层太大也会分片。</p>
+<p>但是，这只是理论上的，实际使用过程中，当 sendto 超过 MTU，会报错。</p>
+</li>
+</ul>
+<p>可靠性传输</p>
+<ul>
+<li>ACK机制</li>
+<li>重传机制</li>
+<li>序号机制</li>
+<li>重排机制</li>
+<li>窗口机制</li>
+</ul>
+<p>主要用途：</p>
+<ul>
+<li>大量数据传输（下载）</li>
+<li>实时性强（竞技类游戏）</li>
+<li>已有的协议（dns 请求域名 ip）</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不稳定</li>
+<li></li>
+</ul>
+<h4 id="二-tcp">二、TCP</h4>
+<h4 id="三">三、</h4>
+<h4 id="四">四、</h4>
+<h4 id="五">五、</h4>
+<p><strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[网络编程]]></title>
+        <id>https://zj11224.github.io/post/2022.07.10.网络编程/</id>
+        <link href="https://zj11224.github.io/post/2022.07.10.网络编程/">
+        </link>
+        <updated>2022-07-09T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>堵塞IO：没有数据时堵塞，直到数据返还。</p>
+<p>非堵塞IO：没有数据时返还 err，有数据时返还数据。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-socket">一、socket</h4>
+<p>关键词：socket通信；socketfd；fd；io；</p>
+<ul>
+<li>socket 是什么？
+<ol>
+<li>数字</li>
+<li>文件</li>
+<li>文件描述符</li>
+<li>fd</li>
+</ol>
+</li>
+</ul>
+<p>以上理解都是对的，socket 本质上就是插座，为 tcp 通信提供具体的接口。</p>
+<ul>
+<li>fd是什么？</li>
+</ul>
+<p>socket() 函数创建一个 socketfd。</p>
+<p>注意：fd 本质上就是位图上的一位数字，从小到大创建。</p>
+<p>fd 可以看作是<strong>网络资源数值化</strong>的结果（五元组：源ip、目的ip、源端口、目的端口、协议）。</p>
+<p>fd --&gt; （sip, dip, sport, dport, tcp/udp)。</p>
+<p>可以将其当作一个客户端，同时具备一些 io 的属性。</p>
+<p>每个进程都有自己的文件系统空间，即 fd 都是内部分配，两个不同进程可能存在相同 fd，但是具体的含义是一样的，父子进程是可以继承 fd 的，即自己进程空间中都有一个fd，但是指向内核文件都是同一个，被记录在open files table这个表中，每个内核连接文件都有自己的send、revc buffer（内核态中）。</p>
+<p><code>ulimit -a</code> 可查看进程fd上限（open file）。</p>
+<ul>
+<li>io 是什么？</li>
+</ul>
+<p>内存（cpu）与外存、外设、内存以外通信都需要经过 io。</p>
+<p>内存与磁盘、网卡通信也是需要经过 io的。</p>
+<h4 id="二-sigio">二、sigio</h4>
+<p>关键词：sigio；协议栈；信号；进程信号；系统调用；</p>
+<p>为什么要了解 sigio 呢，这里涉及内核态的信号和回调机制。</p>
+<p>我们想像一下一个场景，客户端发送一个消息到服务器指定端口，首先由操作系统接收，然后操作系统通知进程，即将信号抛给进程，进程捕获到 sigio 信号，才能正常接收数据。</p>
+<p>比如 epoll_wait() 堵塞唤醒，就是因为收到了某个信号值。</p>
+<p>sigio 没有区分是哪个 fd。<br>
+udp 接收一个包，触发一次 sigio。<br>
+tcp 不可以这样，因为包太多了，处理的 sigio 会很多。<br>
+在协议栈中，控制 tcp 不去发 sigio。</p>
+<ul>
+<li>
+<p>进程的信号集怎么保存？</p>
+<p>每个进程都有用户态和内核态。</p>
+<p>进程内核态中有一块专门的空间用来存信号，总共有 31 种信号。</p>
+<p>sched.h -&gt; task_struct -&gt; sighand_struct -&gt; k_sigaction action[_NSIG]；</p>
+<p>其中 _NSIG = 64，表示信号存在 action[64] 中。</p>
+</li>
+<li>
+<p>调用 signal 函数时，信号怎么保存到进程中？</p>
+<p>比如，<code>kill -9 pid</code> 就是调用可执行文件 kill，然后调用系统函数 kill() 发送信号给对应进程。</p>
+<p>然后对应进程通过更改 action[sig - 1] 进行保存。</p>
+<p>上一个 sigio 没有触发的会被覆盖。</p>
+<p>本质</p>
+</li>
+<li>
+<p>信号如何发送的？</p>
+<p>通过调用系统函数向进程发送信号。</p>
+</li>
+</ul>
+<h4 id="三-select">三、select</h4>
+<p><code>select(fd_num，rdfs, wdfs, edfs, time_out)</code></p>
+<p>select 为了实现 io 多路复用，采取<strong>条件等待</strong>的方式，当有事件触发时，逐个询问，当前 fd 有事件触发，先将 fd 存放数组当中，轮询完毕后，再处理这些事件。</p>
+<p>rdfs、wdfs、edfs 在调用 select 前，需要设置成我们关心的对应 dfsets，select 返还时会重置三个 set，将就绪 fd 放入其中，因此每次调用前，都需要重置我们关心的 fd。</p>
+<p><code>time_out</code> 当没有事件触发，定时器倒计时完毕，也会激活 select。</p>
+<ul>
+<li>
+<p>监听 fd 数量限制</p>
+<p>由宏定义 FD_SETS 定义，即可使用 fd 最多数量，本质就是 bitmap 大小。</p>
+<p><code>cat /proc/sys/fs/file-max</code> 可查看最大 fd 数量。</p>
+<p>可以修改，但是可能会影响性能。</p>
+</li>
+<li>
+<p>采用线性扫描，效率较低</p>
+<p>调用时间复杂度是线性的，即O(n)。</p>
+<p>只知道有 IO 事件发生，却<strong>不知道具体是谁</strong>，无差别询问所有流。</p>
+</li>
+<li>
+<p>用户态数据拷贝到内核态</p>
+<p>每次 select 都需要将 rdfs、wdfs、edfs 从用户态拷贝到内核态。</p>
+<p>当 df 很多时，这个数据量会很大。</p>
+</li>
+</ul>
+<p>当 socket 较多时，每次都要遍历 FD_SIZE 个 socket， 会浪费很多 CPU 时间。</p>
+<p>如果能给 socket 注册对应回调函数，当他们活跃时，自动完成相关操作，即可避免轮询。</p>
+<p>这种机制就是后文要说的 epoll。</p>
+<p>注意：select 并不是<strong>轮询</strong>机制？</p>
+<h4 id="四-poll">四、poll</h4>
+<p>select 中 read、write、end 三种事件，三个参数。</p>
+<p>poll 中 将其合并，只用一个参数存储，仅此而已。</p>
+<h4 id="五-epoll">五、epoll</h4>
+<p>epoll 实现类似于被触发的事件存放在一个地方，然后通过 epoll_wait 函数取出被触发的事件，然后执行相应操作。</p>
+<p><code>epoll_create(int size)</code></p>
+<p>早期 size 表示就绪队列大小，现在只有 0 和 1 的区别。</p>
+<p><code>epoll_wait(epfd, events, length, timeout)</code></p>
+<p><code>timeout</code>：定期取出，-1 表示有数据才取。</p>
+<p><code>length</code>：每次取出的数量，建议总 io 的 100 分之 1。</p>
+<p><code>epoll_ctl(int epfd, int op, int fd, struct epoll_event* event)</code></p>
+<p><code>fd</code>：监听 fd。</p>
+<p>epoll_ctl做了两件事情：</p>
+<ul>
+<li>事件注册在红黑树（socketfd 作为 key）。</li>
+<li>和网卡驱动程序建立一个回调关系，检测到有事件发生，拷贝到就绪队列当中。</li>
+</ul>
+<p>被动连接（作为服务器），事件注册为EPOLLIN，第一次触发表示连接成功。</p>
+<p>主动连接（作为客户端），事件注册为EPOLLIOUT，第一次触发（第二次握手）表示连接成功。</p>
+<p>ET（边沿触发）：缓冲区状态变化（增、减）触发</p>
+<p>LT（水平触发）：有数据一直触发</p>
+<p>ET + 循环读（触发一次循环读取完）</p>
+<p>LT + 一次读（多次触发读取完毕）</p>
+<p>本质上都是一样的，多次读，但是ET是针对一个IO循环读，没有兼顾其他IO，所以建议用来处理小块数据。</p>
+<p>ET必须使用非阻塞IO。<br>
+因为ET是缓冲区变化才触发，需要循环读，直到读取不到数据才停止，而堵塞io会导致最后一次读取堵塞，无法结束。</p>
+<p>listenfd适合LT，防止丢失连接请求。</p>
+<p>epoll_wait会切换到内核态。</p>
+<p>epoll_wait 一次只能触发一个 listenfd，即取出来的 n 个事务，只有一个事务是关于 listenfd 的，只能连接一个客户端。<br>
+当出现大量客户端请求连接时，比如100个，那么 epoll_wait 需要触发100次，才能将这些连接事务处理完毕，但是每处理一个连接事务都要处理 n - 1 个其他事务，导致连接效率低下。</p>
+<p>多线程，但是可能出现以下情况：</p>
+<p>客户端在线程A中存在运行数据，然后后面在线程B中运行，这样就会导致一些数据竞争的问题，这里要求线程只处理数据，不存数据。</p>
+<p><strong>BUGS：</strong><br>
+在Linux内核版本2.6.9之前，EPOLL_CTL_DEL操作时，event必须是一个非空的指针，实际并没有使用。</p>
+<p>2.6.9内核版本以后可以直接设置为NULL。</p>
+<p>io多路复用：单线程或单进程同时监测若干个文件描述符是否可以执行IO操作的能力。</p>
+<p>reactor模型：对io的处理改为对事件的处理，通过事件驱动或事件回调的方式来实现驱动模型。</p>
+<p>握手和挥手都是协议栈处理的，io读写通道的关闭会影响协议栈消息的发出（关闭前发送消息，内部有很多状态）。</p>
+<p>tcp keeplive检测只是在传输层，应用层的死锁和堵塞它是无法识别的，所以需要应用层的心跳检测。</p>
+<p>每个reactor都有一个独立的epoll对象。</p>
+<h4 id="六-websocket">六、websocket</h4>
+<p>websocket和http都是建立在tcp连接（三次握手）之后，即是在send、revc中操作。</p>
+<h4 id="七-百万并发">七、百万并发</h4>
+<p>服务器单个端口监听情况下，客户端上限3w个连接，原因是客户端可用端口限制导致fd数量限制（port_range_from) 。</p>
+<p>服务器多个端口监听情况下，客户端上限6w5个连接，原因是被协议栈出去的防火墙netfilter阻拦（/etc/sysctl.conf, nf_conntrack_max)</p>
+<p><strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[设计模式]]></title>
+        <id>https://zj11224.github.io/post/2022.07.09.设计模式/</id>
+        <link href="https://zj11224.github.io/post/2022.07.09.设计模式/">
+        </link>
+        <updated>2022-07-08T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>​	设计模式是指在软件开发中，经过验证的，用于解决在特定环境下，重复出现的，特定问题的解决方案。</p>
+<p>​	下面将大体介绍所有的设计模式。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h5 id="模式设计原则">模式设计原则</h5>
+<ol>
+<li>依赖倒置原则
+<ul>
+<li>高层模块不应该依赖底层模块，二者都应该依赖<strong>抽象</strong>；</li>
+<li>抽象不应该依赖具体实现，具体实现应该依赖于<strong>抽象</strong>；</li>
+</ul>
+</li>
+<li>开放封闭原则
+<ul>
+<li>一个类应该对扩展开放，对修改关闭；</li>
+</ul>
+</li>
+<li>面向接口编程
+<ul>
+<li>不将变量类型声明为莫格具体的类，而是声明为某个接口；</li>
+<li>客户程序无需获取对象的具体类型，只需要知道对象所具有的接口；</li>
+<li>减少系统中各部分的依赖关系，从而实现 “高内聚、松耦合”的类型设计方案；</li>
+</ul>
+</li>
+<li>封装变化点
+<ul>
+<li>将<strong>稳定点</strong>和<strong>变化点</strong>分离，扩展修改变化的，让稳定点与变化点实现层次分离；</li>
+</ul>
+</li>
+<li>单一职责原则
+<ul>
+<li>一个类应该仅有一个引起它变化的原因；</li>
+</ul>
+</li>
+<li>里氏替换原则
+<ul>
+<li>子类型必须能替换掉它的父类型；</li>
+<li>主要出现在子类覆盖父类实现，原来使用父类型的程序可能出现错误；</li>
+<li>覆盖了父类方法却没实现父类方法的<strong>职责</strong>；</li>
+</ul>
+</li>
+<li>接口隔离原则
+<ul>
+<li>不应该强迫客户依赖于他们不用的方法；</li>
+<li>一般用于处理一个类拥有比较多的接口，而这些接口涉及很多职责；</li>
+</ul>
+</li>
+<li>对象组合优于类继承
+<ul>
+<li>继承耦合度高，组合耦合度低；</li>
+</ul>
+</li>
+</ol>
+<h4 id="一-模板方法">一、模板方法</h4>
+<p>通过算法骨架<strong>约束</strong>子类行为。</p>
+<pre><code class="language-c++">#include &lt;iostream&gt;
+using namespace std;
+
+class ZooShow {
+public:
+    // 固定流程封装到这里
+    void Show() {
+        Show0();
+        Show1();
+        Show2();
+        Show3();
+    }
+protected:
+    // 子流程 使用protected保护起来 不被客户调用 但允许子类扩展
+    virtual void Show0(){
+        cout &lt;&lt; &quot;show0&quot; &lt;&lt; endl;
+    }
+    virtual void Show2(){
+        cout &lt;&lt; &quot;show2&quot; &lt;&lt; endl;
+    }
+    virtual void Show1() {
+
+    }
+    virtual void Show3() {
+
+    }
+};
+class ZooShowEx : public ZooShow {
+protected:
+    virtual void Show1(){
+        cout &lt;&lt; &quot;show1&quot; &lt;&lt; endl;
+    }
+    virtual void Show3(){
+        cout &lt;&lt; &quot;show3&quot; &lt;&lt; endl;
+    }
+    virtual void Show4() {
+        //
+    }
+};
+
+class ZooShowEx1 : public ZooShow {
+protected:
+    virtual void Show0(){
+        cout &lt;&lt; &quot;show1&quot; &lt;&lt; endl;
+    }
+    virtual void Show2(){
+        cout &lt;&lt; &quot;show3&quot; &lt;&lt; endl;
+    }
+};
+
+class ZooShowEx2 : public ZooShow {
+protected:
+    virtual void Show1(){
+        cout &lt;&lt; &quot;show1&quot; &lt;&lt; endl;
+    }
+    virtual void Show2(){
+        cout &lt;&lt; &quot;show3&quot; &lt;&lt; endl;
+    }
+};
+/*
+依赖倒置原则
+单一职责原则
+接口隔离原则
+
+反向控制：应用程序 框架 应用程序（变化的）应该依赖框架（稳定的），应该是框架去调应用程序，而不是应用程序去调框架
+*/
+int main () {
+    ZooShow *zs = new ZooShowEx;
+    ZooShow *zs1 = new ZooShowEx1;
+    ZooShow *zs2 = new ZooShowEx2;
+    zs-&gt;Show();
+    return 0;
+}
+</code></pre>
+<h4 id="二-观察者模式">二、观察者模式</h4>
+<p><strong>触发</strong>联动。</p>
+<pre><code class="language-c++">#include &lt;vector&gt;
+
+class IDisplay {
+public:
+    virtual void Show(float temperature) = 0;
+    virtual ~IDisplay() {}
+};
+
+class DisplayA : public IDisplay {
+public:
+    virtual void Show(float temperature);
+};
+
+class DisplayB : public IDisplay{
+public:
+    virtual void Show(float temperature);
+};
+
+class WeatherData {
+};
+
+class DataCenter {
+public:
+    void Attach(IDisplay * ob);
+    void Detach(IDisplay * ob);
+    void Notify() {
+        float temper = CalcTemperature();
+        for (auto iter = obs.begin(); iter != obs.end(); iter++) {
+            (*iter)-&gt;Show(temper);
+        }
+    }
+
+private:
+    virtual WeatherData * GetWeatherData();
+
+    virtual float CalcTemperature() {
+        WeatherData * data = GetWeatherData();
+        // ...
+        float temper/* = */;
+        return temper;
+    }
+    std::vector&lt;IDisplay*&gt; obs;
+};
+
+int main() {
+    DataCenter *center = new DataCenter;
+    IDisplay *da = new DisplayA();
+    IDisplay *db = new DisplayB();
+    center-&gt;Attach(da);
+    center-&gt;Attach(db);
+    center-&gt;Notify();
+    
+    //-----
+    center-&gt;Detach(db);
+    center-&gt;Notify();
+    return 0;
+}
+</code></pre>
+<h4 id="三-策略模式">三、策略模式</h4>
+<p>分离算法，选择实现。</p>
+<pre><code class="language-c++">class Context {
+
+};
+
+class ProStategy {
+public:
+    virtual double CalcPro(const Context &amp;ctx) = 0;
+    virtual ~ProStategy();
+};
+// cpp
+class VAC_Spring : public ProStategy {
+public:
+    virtual double CalcPro(const Context &amp;ctx){}
+};
+// cpp
+class VAC_QiXi : public ProStategy {
+public:
+    virtual double CalcPro(const Context &amp;ctx){}
+};
+class VAC_QiXi1  : public VAC_QiXi {
+public:
+    virtual double CalcPro(const Context &amp;ctx){}
+};
+// cpp
+class VAC_Wuyi : public ProStategy {
+public:
+    virtual double CalcPro(const Context &amp;ctx){}
+};
+// cpp
+class VAC_GuoQing : public ProStategy {
+public:
+    virtual double CalcPro(const Context &amp;ctx){}
+};
+
+class VAC_Shengdan : public ProStategy {
+public:
+    virtual double CalcPro(const Context &amp;ctx){}
+};
+
+// 稳定的  变化的
+class Promotion {
+public:
+    Promotion(ProStategy *sss) : s(sss){}
+    ~Promotion(){}
+    double CalcPromotion(const Context &amp;ctx){
+        return s-&gt;CalcPro(ctx);
+    }
+private:
+    ProStategy *s;
+};
+
+int main () {
+    Context ctx;
+    ProStategy *s = new VAC_QiXi1();
+    Promotion *p = new Promotion(s);
+    p-&gt;CalcPromotion(ctx);
+    return 0;
+}
+</code></pre>
+<h4 id="四-责任链模式">四、责任链模式</h4>
+<p>分离职责，动态组合。</p>
+<pre><code class="language-c++">#include &lt;string&gt;
+
+class Context {
+public:
+    std::string name;
+    int day;
+};
+
+
+class IHandler {
+public:
+    virtual ~IHandler() {}
+    void SetNextHandler(IHandler *next) {
+        next = next;
+    }
+    bool Handle(ctx) {
+        if (CanHandle(ctx)) {
+            return HandleRequest();
+        } else if (GetNextHandler()) {
+            return GetNextHandler()-&gt;HandleRequest(ctx);
+        } else {
+            // err
+        }
+    }
+protected:
+    virtual bool HandleRequest(const Context &amp;ctx) = 0;
+    virtual bool CanHandle(const Context &amp;ctx) =0;
+    IHandler * GetNextHandler() {
+        return next;
+    }
+private:
+    IHandler *next;
+};
+
+class HandleByMainProgram : public IHandler {
+protected:
+    virtual bool HandleRequest(const Context &amp;ctx){
+        //
+    }
+    virtual bool CanHandle() {
+        //
+    }
+};
+
+class HandleByProjMgr : public IHandler {
+protected:
+    virtual bool HandleRequest(const Context &amp;ctx){
+        //
+    }
+    virtual bool CanHandle() {
+        //
+    }
+};
+class HandleByBoss : public IHandler {
+public:
+    virtual bool HandleRequest(const Context &amp;ctx){
+        //
+    }
+protected:
+    virtual bool CanHandle() {
+        //
+    }
+};
+
+int main () {
+    IHandler * h1 = new MainProgram();
+    IHandler * h2 = new HandleByProjMgr();
+    IHandler * h3 = new HandleByBoss();
+    h1-&gt;SetNextHandler(h2);
+    h2-&gt;SetNextHandler(h3);
+    Context ctx;
+    h1-&gt;handle(ctx);
+    return 0;
+}
+</code></pre>
+<h4 id="五-装饰器模式">五、装饰器模式</h4>
+<p>动态组合。</p>
+<pre><code class="language-c++">// 普通员工有销售奖金，累计奖金，部门经理除此之外还有团队奖金；后面可能会添加环比增长奖金，同时可能产生不同的奖金组合；
+// 销售奖金 = 当月销售额 * 4%
+// 累计奖金 = 总的回款额 * 0.2%
+// 部门奖金 = 团队销售额 * 1%
+// 环比奖金 = (当月销售额-上月销售额) * 1%
+// 销售后面的参数可能会调整
+class Context {
+public:
+    bool isMgr;
+    // User user;
+    // double groupsale;
+};
+
+// 试着从职责出发，将职责抽象出来
+class CalcBonus {    
+public:
+    CalcBonus(CalcBonus * c = nullptr) {}
+    virtual double Calc(Context &amp;ctx) {
+        return 0.0; // 基本工资
+    }
+    virtual ~CalcBonus() {}
+
+protected:
+    CalcBonus* cc;
+};
+
+class CalcMonthBonus : public CalcBonus {
+public:
+    CalcMonthBonus(CalcBonus * c) : cc(c) {}
+    virtual double Calc(Context &amp;ctx) {
+        double mbonus /*= 计算流程忽略*/; 
+        return mbonus + cc-&gt;Calc(ctx);
+    }
+};
+
+class CalcSumBonus : public CalcBonus {
+public:
+    CalcSumBonus(CalcBonus * c) : cc(c) {}
+    virtual double Calc(Context &amp;ctx) {
+        double sbonus /*= 计算流程忽略*/; 
+        return sbonus + cc-&gt;Calc(ctx);
+    }
+};
+
+class CalcGroupBonus : public CalcBonus {
+public:
+    CalcGroupBonus(CalcBonus * c) : cc(c) {}
+    virtual double Calc(Context &amp;ctx) {
+        double gbnonus /*= 计算流程忽略*/; 
+        return gbnonus + cc-&gt;Calc(ctx);
+    }
+};
+
+class CalcCycleBonus : public CalcBonus {
+public:
+    CalcGroupBonus(CalcBonus * c) : cc(c) {}
+    virtual double Calc(Context &amp;ctx) {
+        double gbnonus /*= 计算流程忽略*/; 
+        return gbnonus + cc-&gt;Calc(ctx);
+    }
+};
+
+int main() {
+    // 1. 普通员工
+    Context ctx1;
+    CalcBonus *base = new CalcBonus();
+    CalcBonus *cb1 = new CalcMonthBonus(base);
+    CalcBonus *cb2 = new CalcSumBonus(cb1);
+    cb2-&gt;Calc(ctx1);
+    // 2. 部门经理
+    Context ctx2;
+    CalcBonus *cb3 = new CalcGroupBonus(cb2);
+    cb3-&gt;Calc(ctx2);
+}
+</code></pre>
+<h4 id="六-单例模式">六、单例模式</h4>
+<p>一个类仅有一个实例。</p>
+<pre><code class="language-c++">// 不考虑继承
+// c++11 magic static 特性：如果当变量在初始化的时候，并发同时进⼊声明语句，并发
+线程将会阻塞等待初始化结束。
+class Singleton
+{
+    public:
+    ~Singleton(){}
+    static Singleton&amp; GetInstance() {
+        static Singleton instance;
+        return instance;
+    }
+    private:
+    Singleton(){}
+    Singleton(const Singleton&amp;) {}
+    Singleton&amp; operator=(const Singleton&amp;) {}
+};
+// g++ Singleton.cpp -o singleton -std=c++11
+/*该版本具备 版本5 所有优点：
+1. 利⽤静态局部变量特性，延迟加载；
+2. 利⽤静态局部变量特性，系统⾃动回收内存，⾃动调⽤析构函数；
+3. 静态局部变量初始化时，没有 new 操作带来的cpu指令reorder操作；
+4. c++11 静态局部变量初始化时，具备线程安全；
+*/
+</code></pre>
+<pre><code class="language-c++">// 加上模板和继承情况
+template&lt;typename T&gt;
+class Singleton {
+    public:
+    static T&amp; GetInstance() {
+        static T instance; // 这⾥要初始化DesignPattern，需要调⽤
+        DesignPattern 构造函数，同时会调⽤⽗类的构造函数。
+            return instance;
+    }
+    protected:
+    virtual ~Singleton() {}
+    Singleton() {} // protected修饰构造函数，才能让别⼈继承
+    Singleton(const Singleton&amp;) {}
+    Singleton&amp; operator =(const Singleton&amp;) {}
+};
+class DesignPattern : public Singleton&lt;DesignPattern&gt; {
+    friend class Singleton&lt;DesignPattern&gt;; // friend 能让 Singleton&lt;T&gt; 访
+    问到 DesignPattern构造函数
+        private:
+    DesignPattern(){}
+    DesignPattern(const DesignPattern&amp;) {}
+    DesignPattern&amp; operator=(const DesignPattern&amp;) {}
+}
+</code></pre>
+<p>所有的配置到此结束，<strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[布隆过滤器]]></title>
+        <id>https://zj11224.github.io/post/2022.07.08.布隆过滤器/</id>
+        <link href="https://zj11224.github.io/post/2022.07.08.布隆过滤器/">
+        </link>
+        <updated>2022-07-07T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>布隆过滤器就是 hash + bitmap。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-背景">一、背景</h4>
+<h5 id="1-使用场景">1、使用场景</h5>
+<ul>
+<li>使用 word 文档时，word 如何判断某个单词是否拼写正确？</li>
+<li>网络爬虫程序，如何不再爬取相同url页面？允许有误差</li>
+<li>垃圾邮件（短信）过滤算法如何实现？允许有误差</li>
+<li>公安办案时，如何判断嫌疑人是否在网逃名单？控制误差 假阳率</li>
+<li>缓存穿透问题如何解决？允许有误差</li>
+</ul>
+<h5 id="2-缓存穿透">2、缓存穿透</h5>
+<p>缓存数据库：redis；</p>
+<p>落盘数据库：mysql；</p>
+<p>为了减轻落盘数据库的访问压力，在服务端和数据库之间加入一层用来存放热点数据的缓冲数据层。</p>
+<p>这个体系数据<strong>请求流程：</strong></p>
+<ol>
+<li>访问 redis，如果存在，直接返回；如果不存在跳到2；</li>
+<li>访问 mysql，如果不存在，直接返回；如果存在跳到3；</li>
+<li>将 mysql 存在的 key <strong>写回</strong> redis;</li>
+</ol>
+<p>黑客利用漏洞伪造数据攻击或者内部业务bug重复大量请求不存在的数据。</p>
+<p>那么当一直查询在 redis 和 mysql <strong>都不存在</strong>的数据时，每次一请求都会访问到 mysql，导致其<strong>压力过大</strong>，这就是缓存穿透。</p>
+<p><strong>解决办法：</strong></p>
+<ol>
+<li>
+<p>对于 mysql 中不存在的 key，在 redis 端设置 &lt;key, null&gt; 键值对，以此避免访问 mysql；</p>
+<p>缺点是 &lt;key, null&gt; 过多时，占用过多内存；</p>
+<p>可以给 key 设置过期时间，redis 会自动清除无用的 key；</p>
+</li>
+<li>
+<p>在 server 端存储一个布隆过滤器，将 mysql 中存在的 key 放入布隆过滤器中；</p>
+<p>布隆过滤器一定能过滤掉不存在的数据；</p>
+</li>
+</ol>
+<h4 id="二-hash函数">二、hash函数</h4>
+<p>本质上就是将一个数据映射成一个数字，将这个数据和数字画上等号。</p>
+<pre><code class="language-c++">// 一个简单的哈希函数
+const int C = 13331;
+unsigned int getHash(char* s) {
+    unsigned int res = 0;
+	for (int i = 0; s[i]; i += 1) {
+		res = res * C + s[i];
+    }
+    return res;
+}
+</code></pre>
+<p>可能存在不同数据经过哈希被映射成相同数值，这种情况就称为哈希冲突。</p>
+<p>这里有两种hash冲突解决方案：</p>
+<ul>
+<li>
+<p>链表法</p>
+<p>若出现哈希冲突，将后面冲突 key 添加到 原有 key 的尾端。</p>
+<p>即对每个哈希值建立一条链表来存储哈希冲突的 key。</p>
+<p>当冲突元素过多，导致链表过长时，可以将其转化为红黑树，临界值一般是（256）。</p>
+<p>java中hash相关容器就是上述方法实现。</p>
+</li>
+<li>
+<p>开放寻址法</p>
+<p>若出现哈希冲突，将后面冲突 key 按照一定规律寻找其他位置是否能放入。</p>
+<p>规律大概有以下两种：</p>
+<ol>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo>+</mo><mn>1</mn><mo separator="true">,</mo><mi>i</mi><mo>+</mo><mn>2</mn><mo separator="true">,</mo><mi>i</mi><mo>+</mo><mn>3</mn><mo separator="true">,</mo><mi>i</mi><mo>+</mo><mn>4</mn><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">i+1,i+2,i+3,i+4,...</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo>−</mo><msup><mn>1</mn><mn>2</mn></msup><mo separator="true">,</mo><mi>i</mi><mo>+</mo><msup><mn>2</mn><mn>2</mn></msup><mo separator="true">,</mo><mi>i</mi><mo>−</mo><msup><mn>3</mn><mn>2</mn></msup><mo separator="true">,</mo><mn>1</mn><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">i-1^2,i+2^2,i-3^2,1+4^2,...</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord">3</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord">4</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span></span></span></span></li>
+</ol>
+<p>但是注意，这两种插入规律都会导致<strong>同类hash聚集</strong>，即近似值的哈希值也近似，那么他们位置也靠近，形成 hash 聚集。</p>
+<p>只不过第一种聚集冲突在前，第二种聚集冲突延后。</p>
+<p>我们可以通过<strong>双重哈希</strong>来解决 hash 聚集现象</p>
+<p>具体原理：https://www.cnblogs.com/organic/p/6283476.html</p>
+</li>
+</ul>
+<h4 id="三-位图">三、位图</h4>
+<p>位图（bitmap）：即一位代表一个数字是否存在。</p>
+<p>如一个char变量具有8bit，那么它能表示 0 ~ 7 是否存在；</p>
+<p>增加一个char，就能增加 8 ~ 15 表示范围。</p>
+<pre><code class="language-c++">unsigned char bitmap[];
+// 除法和取余都对应当前数组数据类型 bit 数
+// unsigned char -- 8
+// unsigned int -- 32
+void setBit(int x) {
+	bitmap[x / 8] |= (1 &lt;&lt; (x % 8));
+}
+bool getBit(int x) {
+    int res = bitmap[x / 8] &amp; (1 &lt;&lt; (x % 8));
+    return res != 0;
+}
+</code></pre>
+<h4 id="四-布隆过滤器">四、布隆过滤器</h4>
+<p>注意，上面的 hash 算法都需要存储源数据本身。</p>
+<p>当存储海量数据时，无法提供几百G的内存。</p>
+<p>因此我们需要一个具有哈希算法优点--<strong>不需要比较</strong>，且摒弃缺点--<strong>存储key</strong>的数据结构，那就是布隆过滤器。</p>
+<p>通过<strong>双重哈希算法</strong>和<strong>位图</strong>来实现以上想法。</p>
+<p>布隆过滤器是一种<strong>概率型</strong>数据结构，特点是高效的<strong>插入</strong>和<strong>查询</strong>，能明确告知数据<strong>一定不存在</strong>或者<strong>可能存在</strong>。</p>
+<p>仍然有缺点：<strong>无法删除</strong>，返还结果具有<strong>概率性</strong>，即结果<strong>存在误差</strong>，但<strong>误差可控</strong>。</p>
+<p>我们可以构造出 k 个 hash 函数，然后通过 k 个 hash 函数获得 k 个 hash 值。</p>
+<p>插入时，将这 k 个 hash 值存在 bitmap 对应位置。</p>
+<p>查询时，看 bitmap 中这 k 个位置是否都为 1。</p>
+<pre><code class="language-c++">n -- 布隆过滤器中元素的个数，如上图 只有str1和str2 两个元素 那么 n=2
+p -- 假阳率，在0-1之间 0.000000
+m -- 位图所占空间
+k -- hash函数的个数
+公式如下：
+n = ceil(m / (-k / log(1 - exp(log(p) / k))))
+p = pow(1 - exp(-k / (m / n)), k)
+m = ceil((n * log(p)) / log(1 / pow(2, log(2))));
+k = round((m / n) * log(2));
+</code></pre>
+<ul>
+<li>
+<p>在实际应用中，我们确定 n 和 p，通过上⾯的计算算出 m 和 k；</p>
+<p>也可以在网站上选取合适的值： https://hur.st/bloomfilter</p>
+</li>
+<li>
+<p>如何选取 k 个 hash 函数</p>
+<pre><code class="language-c++">// 采⽤⼀个hash函数，给hash传不同的种⼦偏移值
+// #define MIX_UINT64(v) ((uint32_t)((v&gt;&gt;32)^(v)))
+uint64_t hash1 = MurmurHash2_x64(key, len, Seed);
+uint64_t hash2 = MurmurHash2_x64(key, len, MIX_UINT64(hash1));
+for (i = 0; i &lt; k; i++) // k 是hash函数的个数
+{
+ Pos[i] = (hash1 + i*hash2) % m; // m 是位图的⼤⼩
+}
+// 通过这种⽅式来模拟k个hash函数 跟我们前⾯开放寻址法 双重hash是⼀样的思路
+</code></pre>
+</li>
+</ul>
+<p><strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[红黑树]]></title>
+        <id>https://zj11224.github.io/post/2022.07.07.红黑树/</id>
+        <link href="https://zj11224.github.io/post/2022.07.07.红黑树/">
+        </link>
+        <updated>2022-07-06T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>​	红黑树真的好难啊，不想学了！！！</p>
+<p>​	基本照着网上博客抄了一遍，基本上原理懂了。</p>
+<p>​	红黑树和B/B+树本质上都是2-3-4树的变种，通过上升和下沉操作来保持平衡，只不过在红黑树中上升和下沉都是通过左旋和右旋实现。</p>
+<p>​	set和map都是红黑树实现，但是 set 只存 key，map 存 &lt;key, value&gt;，同时会使用覆盖（相同 key， value选择后面的）。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-定义">一、定义</h4>
+<ol>
+<li>每个结点是红的或者黑的；</li>
+<li>根结点是黑的；</li>
+<li>每个叶子结点是黑的；</li>
+<li>如果一个结点是红的，则它的两个儿子都是黑的；</li>
+<li>对每个结点，从该结点到其子孙结点的所有路径上的 包含相同数目的黑结点。</li>
+</ol>
+<p>红黑树是一颗非严格平衡二叉树</p>
+<p>如黑色高度为h，那么该红黑树每条链的长度在 h 到 2 * h - 1 之间。</p>
+<h4 id="二-插入">二、插入</h4>
+<p>找到插入位置，并将其设置为<strong>红色</strong>。</p>
+<p>接下来若<strong>父节点红色</strong>，才需要平衡操作，否则不需要。</p>
+<p>在<strong>父节点红色</strong>的情况下，大体有三种情况需要平衡：</p>
+<ol>
+<li>父节点的兄弟节点也是红色，将叔父节点和父节点改为黑色，祖父节点改为红色，再对祖父节点平衡</li>
+<li>叔父节点为黑色，且父节点和自身都是偏向同一边（左倾或者右倾），交换父节点和祖父节点颜色，对父节点右旋或者左旋，本质是<strong>将节点移动要另一子树</strong>。</li>
+<li>叔父节点为黑色，但是父节点和自身偏向不同，左旋或者右旋，得到情况2。</li>
+</ol>
+<h4 id="三-删除">三、删除</h4>
+<p>找到删除节点，同时需要找到一个<strong>替代节点</strong>（删除该节点，同时将该节点数值转移到删除节点，但是颜色不变）。</p>
+<ol>
+<li>当删除节点不是双子树的情况下，删除该节点（<strong>替代节点即自身</strong>）；</li>
+<li>将右子树最小值作为替代节点。</li>
+</ol>
+<p>若<strong>替代节点黑色</strong>，说明失衡，需要调整。</p>
+<p>大体有四种情况，当前节点为<strong>替代节点右子节点</strong>。</p>
+<ol>
+<li><strong>当前节点红色</strong>，改为黑色；</li>
+<li><strong>兄弟节点红色</strong>，左旋或者右旋，将兄弟节点<strong>上升</strong>，使得兄弟节点变为原先兄弟节点的子节点（<strong>必为黑色</strong>），然后转变为3、4其中之一。</li>
+<li><strong>兄弟节点黑色</strong>，兄弟节点<strong>子节点都是黑色</strong>，无法通过兄弟子树移动红色节点到自己子树，只能将兄弟节点改为红色，继续递归，直到父节点出现红色，将其变黑。</li>
+<li><strong>兄弟节点黑色</strong>，兄弟子节点<strong>其中一个子节点红色</strong>，尝试通过旋转将其<strong>移动</strong>到自己子树，将其变黑，根据子节点情况不同，会旋转一次或者两次。</li>
+</ol>
+<h4 id="四-查找">四、查找</h4>
+<p>二分查找即可。</p>
+<p><strong>再会！！！</strong></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[B树]]></title>
+        <id>https://zj11224.github.io/post/2022.07.03.B树/</id>
+        <link href="https://zj11224.github.io/post/2022.07.03.B树/">
+        </link>
+        <updated>2022-07-02T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
+<p>​	磁盘读取速度慢，本质上是因为磁盘寻址存在物理性操作（磁盘旋转，找到指定位置，然后读取）。这个读取次数是由树高决定的，所以我们需要降低树高，B树应运而生。B树每个节点内存储数据和磁盘块大小相关，这样能充分利用磁盘内部索引。</p>
+<p>​	B树比红黑树简单很多！！！</p>
+<p>​	红黑树和B/B+树本质上都是2-3-4树的变种，通过上升和下沉操作来保持平衡，只不过在B树中上升和下沉通过分裂和合并实现。</p>
+<p>​	B+树是B树变种，中间节点不存数据只存key，只有叶子节点存储数据，同时相邻叶子节点用链表链接，这样范围搜索，只需要找到头节点即可。</p>
+<h3 id="开始"><strong>开始</strong></h3>
+<h4 id="一-定义">一、定义</h4>
+<p>一颗M阶B树T，满足以下条件：</p>
+<ol>
+<li>每个结点至多拥有M颗子树；</li>
+<li>根结点至少拥有两颗子树；</li>
+<li>除了根结点以外，其余每个分支结点至少拥有M/2颗子树；</li>
+<li>所有的叶结点都在同一层上；</li>
+<li>有k颗子树的分支结点则存在k-1个关键字，关键字按照递增顺序进行排序；</li>
+<li>关键字数量满足 ceil( M / 2) - 1 &lt;= n &lt;= M - 1。</li>
+</ol>
+<h4 id="二-数据结构选型">二、数据结构选型</h4>
+<p>首先，这是一个平衡树，整体上用多叉树实现。</p>
+<p>其次，M选取偶数，key就是奇数个，后面便于分裂。</p>
+<p>最后，每个节点内部的数据存储可以用数组或者链表实现。<br>
+如果使用链表实现，插入删除O(1)，同时插入删除也伴随查询，查询O(n)。<br>
+如果用数组实现，更改头节点O(n)，但是查询（二分查找）时间O(logn)。<br>
+B树一般适用于强查询的，所以这里选用数组来实现。</p>
+<h4 id="三-插入">三、插入</h4>
+<ol>
+<li>递归查找到对应位置；</li>
+<li>在递归过程中，对下个递归节点，预处理；</li>
+<li>下个递归节点如果满了，分裂；</li>
+<li>直到找到指定位置，插入。</li>
+</ol>
+<p>先说下，分裂就是当前节点满了，将其分裂成两个节点，并将中间的数据插入父节点，作为新的两个节点的索引。</p>
+<p>这里有两个概念很重要。</p>
+<ol>
+<li>每次找到的节点，他都是小于 2 * degree - 1，即不满状态。</li>
+<li>只插入叶子节点。</li>
+</ol>
+<p>如何保持不满状态呢？</p>
+<p>很简单，预处理 + 分裂。</p>
+<p>比如当前位置符合，要往左节点递归，若此时左节点满了，那么就先将左节点分裂，此时父节点会多一个数据，然后才继续递归。</p>
+<p>注意根节点满了的特殊情况，要new一个新的根节点，并将第一个索引指向原根节点，然后分裂，递归。</p>
+<p>只有创建的第一个节点是叶子节点属性，分裂继承节点属性(这里也会出现新的叶子节点)，但是其他创建的都是普通的节点。</p>
+<h4 id="四-删除">四、删除</h4>
+<ol>
+<li>递归查找到对应位置</li>
+<li>在递归过程中，对下个递归节点，预处理</li>
+<li>下个递归节点如果恰好为最小数量，尝试借取（有多种情况）</li>
+<li>直到找到指定位置，删除</li>
+</ol>
+<p>这里的逻辑类似插入，就是确保递归进入的节点数据量大于最小值 degree - 1，通过预处理+借取操作实现。</p>
+<p>但是这里的借取操作有4种情况：</p>
+<ol>
+<li>右兄弟节点富裕，自己从父节点借一个，父节点从右兄弟节点借一个；</li>
+<li>左兄弟节点富裕，自己从父节点借一个，父节点从左兄弟节点借一个；</li>
+<li>左兄弟节点存在，将左兄弟节点、父节点、自己合并；</li>
+<li>右兄弟节点存在，将自己、父节点、右兄弟节点合并。</li>
+</ol>
+<p>删除同样有4种情况：</p>
+<ol>
+<li>叶子节点数据直接删（注意进入该节点就说明该节点数量大于 degree - 1）;</li>
+<li>左孩子富裕，借一个，代替被删除数据（保持删除数据索引有效）；</li>
+<li>右孩子富裕，借一个，代替被删除数据（保持删除数据索引有效）；</li>
+<li>都不富裕，左孩子、自己、右孩子合并。</li>
+</ol>
+<h4 id="五-查找">五、查找</h4>
+<p>因为用数组实现，所以节点内搜索直接用二分查找即可。</p>
+<p><strong>再会！！！</strong></p>
 ]]></content>
     </entry>
     <entry>
@@ -183,11 +1023,11 @@ if err != nil {
 }
 </code></pre>
 <h4 id="二-枚举">二、枚举</h4>
-<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/enum.jpg" alt="enum" loading="lazy"></figure>
+<p>![enum](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\enum.jpg)</p>
 <h4 id="三-结构体">三、结构体</h4>
-<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/struct.jpg" alt="struct" loading="lazy"></figure>
+<p>![struct](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\struct.jpg)</p>
 <h4 id="四-关键分配任务逻辑">四、关键分配任务逻辑</h4>
-<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.05.20_MapReduce%E6%A1%86%E6%9E%B6/distribute.jpg" alt="distribute" loading="lazy"></figure>
+<p>![](D:\ResourceFile\Documents\My Blog\images\2022.05.20_MapReduce框架\distribute.jpg)</p>
 <h4 id="五-细节">五、细节</h4>
 <ol>
 <li>先监听服务再执行channel，不然work无法获得任务（本质是channel堵塞无法往下执行）。</li>
@@ -403,437 +1243,6 @@ xxx为你的项目名，不一定要和工程文件夹名相同</p>
 <p>但是后面你的导入自己的包就要用到这个module名<br>
 比如：<code>import xxx/packageName</code></p>
 <p>所有的配置到此结束，<strong>再会！！！</strong></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Ubuntu VSCode远程连接配置]]></title>
-        <id>https://zj11224.github.io/post/2022.04.26.Ubuntu VSCode远程连接配置/</id>
-        <link href="https://zj11224.github.io/post/2022.04.26.Ubuntu VSCode远程连接配置/">
-        </link>
-        <updated>2022-04-25T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
-<p>记录一下通过VSCode通过ssh插件远程Ubuntu虚拟机、编写go代码中遇到的一些坑。</p>
-<h3 id="开始"><strong>开始</strong></h3>
-<h4 id="一-虚拟机远程连接配置">一、虚拟机远程连接配置</h4>
-<p>首先确认主机和虚拟机双方能ping通</p>
-<p>执行以下命令</p>
-<pre><code class="language-shell"># 安装ssh相关服务
-sudo apt install openssh-server
-
-# 修改配置文件
-sudo gedit /etc/ssh/sshd_config
-</code></pre>
-<p>找到以下选项进行设置（我打开就是设置好了）：<br>
-<code>Port 22</code><br>
-<code>PermitRootLogin yes</code><br>
-<code>PubkeyAuthentication yes</code></p>
-<pre><code class="language-shell"># 启动ssh服务
-sudo /etc/init.d/ssh start
-# 设置开机自启动
-sudo systemctl enable ssh
-</code></pre>
-<h4 id="二-vs-code配置">二、VS Code配置</h4>
-<p>下载remote-ssh插件</p>
-<p>配置config文件<br>
-获取虚拟机ip <code>ifconfig</code></p>
-<pre><code class="language-sh"># 自定义远程服务器名
-Host hostname
-	# 服务器ip
-    HostName 192.168.x.xxx
-    # 服务器上的用户名
-    User username
-    # ssh端口
-    Port 22
-# 上面代码后面的注释记得删，不然会报管道错误
-</code></pre>
-<h4 id="三-免密登录">三、免密登录</h4>
-<p>windows主机下，在cmd下输入<code>ssh-keygen</code>生成密钥（需要git）<br>
-生成路径如下：<br>
-<code>C:\Users\username\.ssh\id_rsa</code><br>
-<code>C:\Users\username\.ssh\id_rsa.pub</code></p>
-<p>将其中<code>id_rsa.pub</code>发送到虚拟机内的<code>/home/username/.ssh</code>中。<br>
-将其改名为<code>authorized_keys</code></p>
-<p>添加<code>IdentityFile &quot;C:\Users\username\.ssh\id_rsa&quot;</code>到VSCode config文件中。</p>
-<p>重启ssh即可。</p>
-<h4 id="四-编写go代码">四、编写go代码</h4>
-<p>若要用到定义跳转（ctrl+点击），代码补全等功能，vscode会提示下载插件<br>
-点击下载可能会失败，因为是通过github下载。<br>
-可以更改goproxy<br>
-<code>go env -w GOPROXY=https://goproxy.cn,direct</code><br>
-重新下载即可（自动下载到GOPATH路径下）。</p>
-<p>还有两个注意点：</p>
-<p>1、必须是go module管理项目，不然无法识别<strong>导入自定义包</strong>和<strong>当前编写文件外函数、变量</strong>。</p>
-<p>2、main包中多个main函数会报错，可以将其放在不同文件夹下，即使多个main函数也不会报错。</p>
-<p>所有的配置到此结束，<strong>再会！！！</strong></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[VSCode C++json文件配置]]></title>
-        <id>https://zj11224.github.io/post/2022.01.23.VSCode C++json文件配置/</id>
-        <link href="https://zj11224.github.io/post/2022.01.23.VSCode C++json文件配置/">
-        </link>
-        <updated>2022-01-22T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
-<p>VS Code C++个人json文件配置备份</p>
-<h3 id="开始"><strong>开始</strong></h3>
-<h4 id="一-launchjson调试运行配置">一、launch.json（调试运行配置）</h4>
-<pre><code class="language-json">{  
-    &quot;version&quot;: &quot;0.2.0&quot;,  
-    &quot;configurations&quot;: [  
-        {  
-            &quot;name&quot;: &quot;c++ debug&quot;,        // 配置名称
-            &quot;type&quot;: &quot;cppdbg&quot;,           // 配置类型，这里只能为cppdbg  
-            &quot;preLaunchTask&quot;: &quot;compile&quot;, // 调试前任务(编译)
-            &quot;request&quot;: &quot;launch&quot;,        // 请求配置类型，可以为launch或attach  
-            &quot;program&quot;: &quot;${workspaceFolder}/build/${fileBasenameNoExtension}.exe&quot;,// 将要进行调试的程序的路径  
-            &quot;args&quot;: [
-                &quot;&lt;&quot;,
-                &quot;${workspaceFolder}/input&quot;,//数据输入文件
-                &quot;&gt;&quot;,
-                &quot;${workspaceFolder}/output&quot;//数据存储文件
-            ],                              // 程序调试时传递给程序的命令行参数
-            &quot;stopAtEntry&quot;: false,           // 程序入口是否断点
-            &quot;cwd&quot;: &quot;${workspaceFolder}&quot;,    // 调试程序时的工作目录
-            &quot;environment&quot;: [],              // 环境依赖
-            &quot;externalConsole&quot;: false,       // 调试时是否显示cmd
-            //&quot;console&quot;: &quot;internalConsole&quot;, // 输出显示
-            &quot;internalConsoleOptions&quot;: &quot;neverOpen&quot;,  // 是否跳到调试控制台
-            &quot;MIMode&quot;: &quot;gdb&quot;,                // 指定连接调试器
-            &quot;miDebuggerPath&quot;: &quot;gdb.exe&quot;, 	// miDebugger的路径
-            &quot;setupCommands&quot;: [  
-                {   
-		            &quot;description&quot;: &quot;Enable pretty-printing for gdb&quot;,  
-                    &quot;text&quot;: &quot;-enable-pretty-printing&quot;,  
-                    &quot;ignoreFailures&quot;: true  
-                }  
-            ]  
-        }  
-    ]  
-}
-</code></pre>
-<h4 id="二-tasksjson任务配置">二、tasks.json（任务配置）</h4>
-<p>任务（即选择一个任务名，运行内部封装的一套命令）</p>
-<p>这里主要是封装编译的命令</p>
-<pre><code class="language-json">{
-    &quot;version&quot;: &quot;2.0.0&quot;,
-    &quot;tasks&quot;: [
-        {
-            &quot;type&quot;: &quot;shell&quot;,    // 任务类型
-            &quot;label&quot;: &quot;compile&quot;,     // 任务名
-            &quot;command&quot;: &quot;D:\\Program\\mingw64\\bin\\g++.exe&quot;,    // 编译器路径
-            &quot;args&quot;: [
-                &quot;-g&quot;,
-                &quot;${file}&quot;,
-                &quot;-o&quot;,
-                &quot;${workspaceFolder}/build/${fileBasenameNoExtension}.exe&quot;,
-            ],
-            &quot;options&quot;: {
-                &quot;cwd&quot;: &quot;${workspaceFolder}&quot;
-            },
-            &quot;problemMatcher&quot;: [
-                &quot;$gcc&quot;
-            ]
-        }
-    ]
-}
-</code></pre>
-<h4 id="三-c_cpp_propertiesjson插件配置">三、c_cpp_properties.json（插件配置）</h4>
-<pre><code class="language-json">{
-    &quot;configurations&quot;: [
-        {
-            &quot;name&quot;: &quot;Win32&quot;,
-            &quot;includePath&quot;: [
-                &quot;${workspaceFolder}&quot;
-            ],
-            &quot;defines&quot;: [],
-            &quot;compilerPath&quot;: &quot;D:\\Program\\mingw64\\bin\\g++.exe&quot;,
-            &quot;browse&quot;: {
-                &quot;path&quot;: [
-                    &quot;${workspaceFolder}&quot;    // 符号路径搜索区
-                ]
-            },
-            &quot;cStandard&quot;: &quot;c11&quot;,
-            &quot;cppStandard&quot;: &quot;c++17&quot;
-        }
-    ],
-    &quot;version&quot;: 4
-}
-</code></pre>
-<p>所有的配置到此结束，<strong>再会！！！</strong></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[VMware Ubuntu虚拟机环境搭建教程]]></title>
-        <id>https://zj11224.github.io/post/2022.01.18.VMware Ubuntu虚拟机环境搭建教程/</id>
-        <link href="https://zj11224.github.io/post/2022.01.18.VMware Ubuntu虚拟机环境搭建教程/">
-        </link>
-        <updated>2022-01-17T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
-<p>我们这里主要针对ubuntu系统安装完毕后的以下问题。</p>
-<p>联网、换源、中文环境。</p>
-<h3 id="开始"><strong>开始</strong></h3>
-<h4 id="准备工作"><strong>准备工作</strong></h4>
-<p>VMware <a href="https://www.vmware.com/cn/products/workstation-pro.html">官网下载</a>: 下载试用版，然后去网上找激活码激活</p>
-<p>ubuntu <a href="http://mirrors.aliyun.com/ubuntu-releases/16.04/">镜像下载</a>: 下载ubuntu16.04</p>
-<p>接着在VMware新建虚拟机，挂载ubuntu的iso文件，剩下的按照他的流程走即可。</p>
-<h4 id="一-联网">一、联网</h4>
-<h5 id="1-vmware虚拟网卡配置">1、VMware虚拟网卡配置</h5>
-<p>Workstation -&gt; 编辑 -&gt; 虚拟网络编辑器</p>
-<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.1.%E6%B7%BB%E5%8A%A0%E8%99%9A%E6%8B%9F%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
-<p>添加网络 -&gt; 选择VMnet8, 显示如下:</p>
-<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.2.%E8%99%9A%E6%8B%9F%E7%BD%91%E5%8D%A1%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>更改NAT设置</p>
-<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.3.nat%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>更改DHCP设置</p>
-<figure data-type="image" tabindex="4"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.1.4.dhcp%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<h5 id="2-本地适配器设置">2、本地适配器设置</h5>
-<p>右键WIFI图标 -&gt; 打开网络和Internet设置 -&gt; 下滑找到更改适配器 -&gt; 点击，显示如下：</p>
-<figure data-type="image" tabindex="5"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.2.1.%E6%9C%AC%E5%9C%B0%E7%BD%91%E7%BB%9C%E9%80%82%E9%85%8D%E5%99%A8%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>点击VMnet8 -&gt; 属性 -&gt; &quot;Internet协议版本4(TCP/IPv4)&quot; -&gt; 修改ip(网段要和虚拟网卡相同)，显示如下：</p>
-<figure data-type="image" tabindex="6"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.2.2.vmnet8%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<h5 id="3-ubuntu网卡设置">3、ubuntu网卡设置</h5>
-<p>右键右上角上下箭头图标(网络) -&gt; Edit connections... -&gt; Add，显示如下：</p>
-<figure data-type="image" tabindex="7"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.1.ubuntu%E7%BD%91%E5%8D%A1%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="8"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.2.ubuntu%E5%A2%9E%E5%8A%A0%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
-<p>选中新添加网卡 -&gt; Edit -&gt; Ethernet -&gt; Device -&gt; ens33网卡，显示如下：</p>
-<figure data-type="image" tabindex="9"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.3.ubuntu%E8%AE%BE%E7%BD%AE%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
-<p>可能有些人的ubuntu不是16版本，就没有ens33这张网卡，可以通过ifconfig查看自己初始网卡是什么</p>
-<figure data-type="image" tabindex="10"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.3.4.%E6%A3%80%E6%9F%A5%E7%BD%91%E5%8D%A1.png" alt="" loading="lazy"></figure>
-<p>到此网络配置结束。</p>
-<h5 id="4-网络检测">4、网络检测</h5>
-<p>ubuntuIP通过ifconfig查看，本机IP通过ipconfig查看，可以相互ping以下，我这里是通的。</p>
-<figure data-type="image" tabindex="11"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.4.1.%E8%99%9A%E6%8B%9F%E6%9C%BAping%E4%B8%BB%E6%9C%BA.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="12"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1.4.2.%E4%B8%BB%E6%9C%BAping%E8%99%9A%E6%8B%9F%E6%9C%BA.png" alt="" loading="lazy"></figure>
-<p>ubuntu网卡这是这里其实可以通过命令行实现，但是这里有个前提。</p>
-<p>即使通过命令行配置，图形化的配置也会覆盖掉命令行，所以需要先删除网卡配置图形化功能模块。</p>
-<pre><code>网卡文件路径：/etc/network/interfaces
-dns文件路径: /etc/ersolv.conf
-</code></pre>
-<p>dns文件是通过网卡文件生成的，也就是你配置了dns文件，下次开机也会重置，dns要在网卡文件里面配置。</p>
-<p>但是dns文件配置后是有效的，只是下次开机重置了，只针对这次。</p>
-<h4 id="二-换源">二、换源</h4>
-<p>把国外的源换成本地的源，加快下载功能模块速度</p>
-<h5 id="1-通过图形化界面换源">1、通过图形化界面换源</h5>
-<p>System Settings（设置） -&gt; Software&amp;Updates，显示如下：</p>
-<figure data-type="image" tabindex="13"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2.1.1.%E6%8D%A2%E6%BA%90.png" alt="" loading="lazy"></figure>
-<p>Download from -&gt; Others -&gt; China -&gt; 随便选，显示如下：</p>
-<figure data-type="image" tabindex="14"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2.1.2.%E6%8D%A2%E6%BA%90.png" alt="" loading="lazy"></figure>
-<h5 id="2-通过命令行换源">2、通过命令行换源</h5>
-<pre><code>sudo gedit /etc/apt/sources.list
-</code></pre>
-<p>清空里面内容，同时把下面内容复制上去</p>
-<pre><code>deb http://mirrors.aliyun.com/ubuntu/ xenial main
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial main
-
-deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main
-
-deb http://mirrors.aliyun.com/ubuntu/ xenial universe
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial universe
-deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
-
-deb http://mirrors.aliyun.com/ubuntu/ xenial-security main
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main
-deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
-deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security universe
-</code></pre>
-<p>更新</p>
-<pre><code>sudo apt-get update
-</code></pre>
-<p>完成</p>
-<h5 id="3-可能会遇到的问题">3、可能会遇到的问题</h5>
-<p>sources.list被占用，杀死占用进程</p>
-<pre><code> sudo fuser -vki /var/lib/apt/lists/lock
-</code></pre>
-<p>更新过程卡住</p>
-<pre><code>sudo apt-get clean
-sudo apt-get update
-</code></pre>
-<p>像下面的错误大概是链接复制错了，重新复制一下</p>
-<figure data-type="image" tabindex="15"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2.2.1.%E6%8D%A2%E6%BA%90%E9%97%AE%E9%A2%98.png" alt="" loading="lazy"></figure>
-<h4 id="三-中文环境">三、中文环境</h4>
-<p>Language Support -&gt; Install/Remove Language... -&gt; Chinese，显示如下：</p>
-<figure data-type="image" tabindex="16"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.1.%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E4%B8%8B%E8%BD%BD.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="17"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.2.%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>点击Language Support，选择汉语，应用，显示如下：</p>
-<figure data-type="image" tabindex="18"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.3.%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E6%B3%95%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>更改成功，重启虚拟机，显示如下：</p>
-<figure data-type="image" tabindex="19"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.1.4.%E4%B8%AD%E6%96%87%E7%95%8C%E9%9D%A2.png" alt="" loading="lazy"></figure>
-<h5 id="下载中文输入">下载中文输入</h5>
-<p>Language Support -&gt; Keyboard input method system -&gt; fcitx，显示如下</p>
-<figure data-type="image" tabindex="20"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.2.1.%E8%BE%93%E5%85%A5%E6%B3%95%E6%A1%86%E6%9E%B6.png" alt="" loading="lazy"></figure>
-<p>下载搜狗输入法</p>
-<pre><code>sudo dpkg -i sogoupinyin_2.2.0.0108_amd64.deb
-sudo apt-get install -f
-</code></pre>
-<figure data-type="image" tabindex="21"><img src="https://zj11224.github.io/post-images/2022.01.18_ubuntu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/3.2.2.%E4%BD%BF%E7%94%A8%E8%BE%93%E5%85%A5%E6%B3%95.png" alt="" loading="lazy"></figure>
-<p>所有的配置到此结束，<strong>再会！！！</strong></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[VMwareTools问题]]></title>
-        <id>https://zj11224.github.io/post/2022.01.18.VMwareTools问题/</id>
-        <link href="https://zj11224.github.io/post/2022.01.18.VMwareTools问题/">
-        </link>
-        <updated>2022-01-17T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
-<p>本想解决虚拟机和本机间拖拽文件、文本复制粘贴公用，但是搞了一下午都没搞成功。</p>
-<p>这里把我找到的一些方法写出来，应该能解决大部分人的问题。</p>
-<p>若实在没法解决，也有一个共享文件夹的备用方案。</p>
-<h3 id="开始"><strong>开始</strong></h3>
-<h4 id="一-安装vmware-tools">一、安装VMware Tools</h4>
-<h5 id="1-使用命令行下载官方推荐">1、使用命令行下载（官方推荐）</h5>
-<p>执行下面三行命令即可</p>
-<pre><code>sudo apt-get autoremove open-vm-tools
-sudo apt-get install open-vm-tools
-sudo apt-get install open-vm-tools-desktop
-
-reboot
-</code></pre>
-<h5 id="2-使用自带的vmware-tools文件">2、使用自带的VMware Tools文件</h5>
-<p>运行ubuntu，点击虚拟机，显示如下：</p>
-<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.1.vmtools%E7%81%B0%E8%89%B2.png" alt="" loading="lazy"></figure>
-<p>部分人可能安装/重新安装VMware Tools是灰色的。</p>
-<p>解决方法：</p>
-<p>先关机，虚拟机 -&gt; 设置</p>
-<p>将驱动器都设置为自动获取</p>
-<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.3.%E9%A9%B1%E5%8A%A8%E5%99%A8%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>也可以在驱动器上挂载VMware Workstation文件夹下的linux.iso/windows.iso(对应系统)</p>
-<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.4.%E9%A9%B1%E5%8A%A8%E5%99%A8%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>开机后就会自动获取了，显示如下：</p>
-<figure data-type="image" tabindex="4"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.1.2.vmtools%E6%98%BE%E7%A4%BA%E6%AD%A3%E5%B8%B8.png" alt="" loading="lazy"></figure>
-<p>点击下载</p>
-<figure data-type="image" tabindex="5"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.2.1.vmtools%E5%85%89%E7%9B%98.png" alt="" loading="lazy"></figure>
-<p>压缩文件提取</p>
-<figure data-type="image" tabindex="6"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/1.2.2.vmtools%E5%8E%8B%E7%BC%A9%E5%8C%85%E6%8F%90%E5%8F%96.png" alt="" loading="lazy"></figure>
-<p>然后在提取出来的文件夹里打开终端，执行下面命令</p>
-<pre><code>sudo ./vmware-install.pl
-sudo apt-get update
-reboot
-</code></pre>
-<p>安装完成</p>
-<h4 id="二-可能存在的问题">二、可能存在的问题</h4>
-<p>我是为了能实现文件拖拽和复制共享才需要VMwareTools，但是尝试完上面两种安装方法都无法拖拽问题，下面是我百度到的一些解决方法，对我仍然无效，大家可以试一下。</p>
-<h5 id="1-vmwaretools原有文件没有清理干净">1、VMwareTools**原有文件没有清理干净</h5>
-<p>将VMwareTools清理干净，再次下载</p>
-<pre><code>sudo vmware-uninstall-tools.pl
-sudo apt-get remove open-vm-tools
-sudo apt-get remove --auto-remove open-vm-tools
-sudo apt-get purge open-vm-tools
-</code></pre>
-<h5 id="2-vmwaretools有bug下载补丁">2、VMwareTools有bug，下载补丁</h5>
-<pre><code>git clone https://github.com/rasa/vmware-tools-patches.git
-</code></pre>
-<h5 id="3-mware拖拽文件选项没选">3、Mware拖拽文件选项没选</h5>
-<p>虚拟机 -&gt; 设置 -&gt; 选项 -&gt; 客户机隔离 -&gt; 启用拖放+复制粘贴，显示如下：</p>
-<figure data-type="image" tabindex="7"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/2.1.%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%9D%83%E9%99%90.png" alt="" loading="lazy"></figure>
-<h5 id="4-vmware增强型键盘">4、VMware增强型键盘</h5>
-<p>虚拟机 -&gt; 设置 -&gt; 选项 -&gt; 常规 -&gt; 增强型键盘启用，显示如下：</p>
-<figure data-type="image" tabindex="8"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/2.2.%E9%94%AE%E7%9B%98%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<h5 id="5-ubuntu进程未开启">5、ubuntu进程未开启</h5>
-<pre><code>/usr/bin/vmware-user
-</code></pre>
-<p>以上就是我能找到关于文件拖拽功能的解决办法，基本上每种都有人回复有效，也都有人回复没用。</p>
-<p>都可以试一下</p>
-<h4 id="三-备用方案">三、备用方案</h4>
-<p>虚拟机 -&gt; 设置 -&gt; 选项 -&gt; 常规 -&gt; 启用共享文件夹，设置文件路径，显示如下：</p>
-<figure data-type="image" tabindex="9"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.1.%E5%90%AF%E7%94%A8%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9.png" alt="" loading="lazy"></figure>
-<p>在本机找到共享文件 -&gt; 属性 -&gt; 共享, 显示如下：</p>
-<figure data-type="image" tabindex="10"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.2.%E6%9C%AC%E6%9C%BA%E5%85%B1%E4%BA%AB%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>共享文件夹就在/mnt/hgfs目录下，</p>
-<p>若没有再次重装VMwareTools（参考上面）<br>
-或者运行下面命令</p>
-<pre><code class="language-shell"># 确认是否配置成功，有输出共享文件夹名，则成功
-vmware-hgfsclient
-# 如果之前没有命令包则先执行sudo apt-get install open-vm-tools
-sudo vmhgfs-fuse .host:/ /mnt/hgfs -o nonempty -o allow_other
-</code></pre>
-<p>接下来就能看到了</p>
-<figure data-type="image" tabindex="11"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.3.%E6%88%90%E5%8A%9F%E5%85%B1%E4%BA%AB.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="12"><img src="https://zj11224.github.io/post-images/2022.01.18_VMwareTools%E9%97%AE%E9%A2%98/3.4.%E6%88%90%E5%8A%9F%E5%85%B1%E4%BA%AB.png" alt="" loading="lazy"></figure>
-<p>所有的配置到此结束，<strong>再会！！！</strong></p>
-<p>2022.04.04</p>
-<p>找到复制粘贴的解决方案：</p>
-<p>就是先执行上面的1、2</p>
-<p>再执行下面的两行命令</p>
-<pre><code>sudo apt-get install open-vm-tools
-sudo apt-get install open-vm-tools-desktop
-</code></pre>
-<p>最后执行5</p>
-<p>备注1：github可能要更改hosts文件才能连上、后面需要把vmware-user添加到自启动软件。</p>
-<p>备注2：主机和虚拟机版本差别过大的话，文件拖拽可能会蓝屏，但是复制粘贴是没问题的。</p>
-<p><strong>该方法多次重开机后，开始无法拖拽！！！</strong></p>
-<p>最后Ubuntu16.04应该是有bug的，我换成20.04就行了，或者通过ftp进行文件传输。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Gridea GitHub个人网站搭建教程]]></title>
-        <id>https://zj11224.github.io/post/2022.01.15.Gridea GitHub个人网站搭建教程/</id>
-        <link href="https://zj11224.github.io/post/2022.01.15.Gridea GitHub个人网站搭建教程/">
-        </link>
-        <updated>2022-01-15T16:00:00.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="前言"><strong>前言</strong></h3>
-<p>虽然GitHub存在部分不用翻墙的站点，但是Gridea生成网页时所使用的url链接，是必须要翻墙的。</p>
-<p>所以，下面的方法都是基于翻墙工具实现的。</p>
-<p>参考了以下两篇博客</p>
-<p><strong>大体配置</strong></p>
-<p><a href="https://imyshare.com/article/36/#:~:text=%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%BF%AB%E9%80%9F%E5%85%8D%E8%B4%B9%E5%BB%BA%E7%AB%99%E6%96%B9%E6%A1%88%201%20%E2%91%A0%E4%BD%BF%E7%94%A8GitHub%E6%88%96CODING%E5%85%8D%E8%B4%B9%E6%89%98%E7%AE%A1%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BD%91%E7%AB%99%E9%A1%B5%E9%9D%A2%EF%BC%8C%E5%B9%B6%E9%85%8D%20...%202,%E2%91%A1%E4%BD%BF%E7%94%A8Gridea%E8%BD%AF%E4%BB%B6%2B%E5%85%8D%E8%B4%B9%E7%BD%91%E7%AB%99%E4%B8%BB%E9%A2%98%EF%BC%8C%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E7%BD%91%E7%AB%99%E7%9A%84%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2%20...%203%20%E2%91%A2%E5%B0%86%E8%87%AA%E5%B7%B1%E7%9A%84%E7%8B%AC%E7%AB%8B%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E5%88%B0%E5%85%8D%E8%B4%B9%E7%9A%84%E6%89%98%E7%AE%A1%E6%9C%8D%E5%8A%A1%E4%B8%8A%EF%BC%8C%E5%AE%9E%E7%8E%B0%E7%8B%AC%E7%AB%8B%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE%E7%BD%91">零基础快速搭建一个属于自己的网站或博客，仅需一天，且完全免费！！！</a></p>
-<p><strong>Gridea配置细节</strong></p>
-<p><a href="https://www.luoyelusheng.com/post/Gridea%E5%90%8C%E6%AD%A5github%E5%A4%B1%E8%B4%A5%E6%9C%80%E7%BB%88%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Gridea同步github失败最终解决方案</a></p>
-<h3 id="开始"><strong>开始</strong></h3>
-<p>搭建思路如下：</p>
-<ol>
-<li>使用GitHub的仓库来免费获取二级域名，同时通过该仓库存放自己的博客</li>
-<li>使用Gridea自动生成网页，通过Gridea操作博客</li>
-</ol>
-<h4 id="一-拥有一个github账号这里就是普通的注册">一、拥有一个GitHub账号（这里就是普通的注册）</h4>
-<h4 id="二-创建仓库并生成二级域名用户名githubio">二、创建仓库，并生成二级域名（用户名.github.io</h4>
-<p>创建仓库</p>
-<figure data-type="image" tabindex="1"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/1.1.%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93.png" alt="" loading="lazy"></figure>
-<p>设置仓库</p>
-<figure data-type="image" tabindex="2"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/1.2.%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<h4 id="三-生成一个token用于gridea同步">三、生成一个token，用于gridea同步</h4>
-<p>点击头像 -&gt; settings -&gt; developer settins -&gt; personal access tokens -&gt; Generate new token</p>
-<figure data-type="image" tabindex="3"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.1.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="4"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.2.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="5"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.3.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>勾选repo，然后生成token，记得把token复制下来。</p>
-<p>token只会在生成时显示，后面都看不到了。</p>
-<figure data-type="image" tabindex="6"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.4.token%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<h4 id="四-gridea配置">四、Gridea配置</h4>
-<p><a href="https://gridea.dev/">Gridea网站</a></p>
-<figure data-type="image" tabindex="7"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/3.gridea%E9%85%8D%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<p>其中因为同步要连接外网，所以需要使用科学上网工具（代理），通过代理连接到网络。</p>
-<p>那么这里就需要让Gridea的流量都走代理的端口，这里需要用到下面的proxifier软件进行配置。</p>
-<h4 id="五-proxifier配置">五、proxifier配置</h4>
-<p>Mac版本地址：https://www.macwk.com/soft/proxifier<br>
-Window版本地址：https://www.hanzify.org/software/13717.html</p>
-<p>我这里使用Windows汉化版进行演示。</p>
-<p>下载完毕后打开代理服务器</p>
-<figure data-type="image" tabindex="8"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.1.%E7%82%B9%E5%87%BB%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt="image-20220115225614046" loading="lazy"></figure>
-<p>然后添加代理服务器</p>
-<figure data-type="image" tabindex="9"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.2.%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE.png" alt="image-20220115225823932" loading="lazy"></figure>
-<p>地址填127.0.0.1即可。</p>
-<p>但是端口必须填你的<strong>代理（VPN）socks使用的端口号</strong></p>
-<figure data-type="image" tabindex="10"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.3.%E4%BB%A3%E7%90%86%E7%AB%AF%E5%8F%A3%E5%B1%95%E7%A4%BA.png" alt="image-20220115230038953" loading="lazy"></figure>
-<p>配置完检查以下，这个代理是否可用</p>
-<figure data-type="image" tabindex="11"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.1.4.%E6%A3%80%E6%9F%A5%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt="image-20220115230211336" loading="lazy"></figure>
-<p>检查没有问题后，接着配置代理规则</p>
-<figure data-type="image" tabindex="12"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.2.2.%E4%BB%A3%E7%90%86%E8%A7%84%E5%88%99%E8%AE%BE%E7%BD%AE.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="13"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.2.1.%E7%82%B9%E5%87%BB%E4%BB%A3%E7%90%86%E8%A7%84%E5%88%99.png" alt="" loading="lazy"></figure>
-<p>最后配置dns设置</p>
-<figure data-type="image" tabindex="14"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.3.1.%E7%82%B9%E5%87%BBdns.png" alt="" loading="lazy"></figure>
-<figure data-type="image" tabindex="15"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.3.2.%E9%85%8D%E7%BD%AEdns%E8%A7%A3%E6%9E%90%E8%A7%84%E5%88%99.png" alt="" loading="lazy"></figure>
-<p>至此，所有配置完毕，点击同步。</p>
-<figure data-type="image" tabindex="16"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/5.1.%E5%90%8C%E6%AD%A5%E6%88%90%E5%8A%9F.png" alt="" loading="lazy"></figure>
-<p>输入连接：用户名.github.io</p>
-<figure data-type="image" tabindex="17"><img src="https://zj11224.github.io/post-images/2022.01.15_%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/5.2.%E7%95%8C%E9%9D%A2%E5%B1%95%E7%A4%BA.png" alt="image-20220115231432784" loading="lazy"></figure>
-<p>接下来就可以在gridea中更换主题，添加博客了。<br>
-这里推荐用typora写博客，然后放到Gridea上。</p>
-<p>所有的配置到此结束，<strong>再会！！！</strong></p>
-<p>2022.05.05<br>
-Gridea好像失效了，建议是通过Gridea<strong>同步</strong>生成配置文件（output/），然后手动将文件发到github上（可使用GitHub Desktop）。</p>
 ]]></content>
     </entry>
 </feed>
